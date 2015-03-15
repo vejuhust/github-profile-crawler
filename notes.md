@@ -81,11 +81,33 @@ apt-get install libc++-dev
 ```
 
 #### run manually
-
 ```bash
 screen -S mdb
 mkdir -p /data/mongodb
 mongod --dbpath /data/mongodb
+```
+
+#### enable authentication
+login via `mongo` to create the administrator and close localhost exception:
+```javascript
+use admin
+db.createUser(
+  {
+    user: "root",
+    pwd: "YOUR_PASSWORD",
+    roles: [ { role: "userAdminAnyDatabase", db: "admin" } ]
+  }
+)
+```
+
+restart the `mongod` with auth required:
+```bash
+mongod --dbpath /data/mongodb --bind_ip=0.0.0.0 --auth
+```
+
+login as `root` with auth:
+```bash
+mongo --port 27017 -u root -p YOUR_PASSWORD --authenticationDatabase admin
 ```
 
 #### python driver
@@ -114,6 +136,7 @@ show dbs
 show collections
 show users
 db.stats()
+exit
 ```
 
 #### create
@@ -146,3 +169,19 @@ db.queue_crawl.drop()
 db.dropDatabase()
 ```
 
+#### add user
+```javascript
+use gitcrawl
+db.createUser(
+  {
+    user: "YOUR_USERNAME",
+    pwd: "YOUR_PASSWORD",
+    roles: [ { role: "dbOwner", db: "gitcrawl" } ]
+  }
+)
+```
+
+try to login with auth:
+```bash
+mongo --port 27017 -u YOUR_USERNAME -p YOUR_PASSWORD --authenticationDatabase gitcrawl
+```
