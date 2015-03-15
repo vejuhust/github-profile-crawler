@@ -99,3 +99,50 @@ install via pip
 sudo pip3 install pymongo
 ```
 
+
+### explore
+
+#### connect via mongodb shell
+bash:
+```bash
+mongo
+```
+
+status:
+```javascript
+show dbs
+show collections
+show users
+db.stats()
+```
+
+#### create
+```javascript
+use gitcrawl
+
+db.createCollection("queue_crawl")
+db.queue_crawl.insert({ "status": "new", "url": "https://github.com/wong2", "date": new Date() })
+db.queue_crawl.insert({ "status": "new", "url": "https://github.com/thankcreate", "date": new Date() })
+```
+
+#### read
+```javascript
+db.queue_crawl.find()
+db.queue_crawl.find({ "status": "new" })
+db.queue_crawl.find({ "url": "https://github.com/wong2" })
+db.queue_crawl.validate()
+```
+
+#### update
+```javascript
+db.queue_crawl.findAndModify({ query: { "status" : "new" }, sort: {"date": 1 },  update: {$set: { "status" : "process" }}})
+```
+
+#### delete
+```javascript
+db.queue_crawl.remove({})
+db.queue_crawl.drop()
+
+db.dropDatabase()
+```
+
