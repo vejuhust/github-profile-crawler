@@ -27,3 +27,30 @@
     - large: https://github.com/SublimeText
 
 
+## design
+
+### roles
+* crawler
+* classifer
+* worker_profile
+* worker_follow
+
+### queues
+* queue_crawl
+* queue_page
+
+### database
+github api response:
+```bash
+curl -i https://api.github.com/users/wong2
+```
+* login
+* name
+* company
+* location
+* email
+* blog
+* created_at
+* followers
+* following
+* starred
