@@ -30,35 +30,34 @@ class DatabaseAccessor():
     def _job_create(self, queue_name, content):
         content['status'] = "new"
         content['date'] = datetime.utcnow()
-        resp = self._db[queue_name].find_and_modify(
+        return None == self._db[queue_name].find_and_modify(
             query={ 'url': content['url'] },
             update={ '$setOnInsert': content },
             upsert=True)
-        return resp == None
+
+
+    def _job_update(self, queue_name, status_old=None, status_new=None, url=None):
+        query = {}
+        if url != None:
+            query['url'] = url
+        if status_old != None:
+            query['status'] = status_old
+        return self._db[queue_name].find_and_modify(
+            query=query,
+            update={ '$set': { 'status': status_new } },
+            sort={ 'date': 1 })
 
 
     def _job_take(self, queue_name):
-        resp = self._db[queue_name].find_and_modify(
-            query={ 'status': "new" },
-            update={ '$set': { 'status': "process" } },
-            sort={ 'date': 1 })
-        return resp
+        return self._job_update(queue_name, "new", "process")
 
 
     def _job_done(self, queue_name, url):
-        resp = self._db[queue_name].find_and_modify(
-            query={ 'url': url, 'status': "process" },
-            update={ '$set': { 'status': "done" } },
-            sort={ 'date': 1 })
-        return resp != None
+        return None != self._job_update(queue_name, "process", "done", url)
 
 
     def _job_fail(self, queue_name, url):
-        resp = self._db[queue_name].find_and_modify(
-            query={ 'url': url, 'status': "process" },
-            update={ '$set': { 'status': "fail" } },
-            sort={ 'date': 1 })
-        return resp != None
+        return None != self._job_update(queue_name, "process", "fail", url)
 
 
     def queue_crawl_create(self, url):

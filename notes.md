@@ -154,9 +154,9 @@ db.queue_crawl.update(
 
 #### read
 ```javascript
-db.queue_crawl.find()
-db.queue_crawl.find({ "status": "new" })
-db.queue_crawl.find({ "url": "https://github.com/wong2" })
+db.queue_crawl.find().pretty()
+db.queue_crawl.find({ "status": "new" }).pretty()
+db.queue_crawl.find({ "url": "https://github.com/wong2" }).pretty()
 db.queue_crawl.validate()
 ```
 
