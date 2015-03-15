@@ -146,6 +146,10 @@ use gitcrawl
 db.createCollection("queue_crawl")
 db.queue_crawl.insert({ "status": "new", "url": "https://github.com/wong2", "date": new Date() })
 db.queue_crawl.insert({ "status": "new", "url": "https://github.com/thankcreate", "date": new Date() })
+db.queue_crawl.update(
+    { "url": "https://github.com/xudifsd" }, 
+    { $setOnInsert: { "url": "https://github.com/xudifsd", "status": "new", "date": new Date() } }, 
+    { "upsert": true })
 ```
 
 #### read
