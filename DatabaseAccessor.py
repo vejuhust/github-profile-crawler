@@ -16,15 +16,15 @@ class DatabaseAccessor():
         self._db = self._client[config_db_name]
         if not self._db.authenticate(config_db_user, config_db_pass):
             raise RuntimeError("Failed to authenticate for {}@{}".format(config_db_user, config_db_addr))
-        self._validate_queue()
+        self._validate_collections()
 
 
-    def _validate_queue(self):
+    def _validate_collections(self):
         names = self._db.collection_names()
-        queues = [config_queue_crawl, config_queue_page]
-        for queue in queues:
-            if queue not in names:
-                self._db.create_collection(queue)
+        collections = [config_db_profile, config_queue_crawl, config_queue_page]
+        for collection in collections:
+            if collection not in names:
+                self._db.create_collection(collection)
 
 
     def _job_create(self, queue_name, content):
