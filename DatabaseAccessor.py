@@ -48,32 +48,20 @@ class DatabaseAccessor():
             sort={ 'date': 1 })
 
 
-    def _job_take(self, queue_name):
-        return self._job_update(queue_name, "new", "process")
-
-
-    def _job_done(self, queue_name, url):
-        return None != self._job_update(queue_name, "process", "done", url)
-
-
-    def _job_fail(self, queue_name, url):
-        return None != self._job_update(queue_name, "process", "fail", url)
-
-
     def queue_crawl_create(self, url):
         return self._job_create(config_queue_crawl, { 'url': url })
 
 
     def queue_crawl_take(self):
-        return self._job_take(config_queue_crawl)
+        return self._job_update(config_queue_crawl, "new", "process")
 
 
     def queue_crawl_done(self, url):
-        return self._job_done(config_queue_crawl, url)
+        return None != self._job_update(config_queue_crawl, "process", "done", url)
 
 
     def queue_crawl_fail(self, url):
-        return self._job_fail(config_queue_crawl, url)
+        return None != self._job_update(config_queue_crawl, "process", "fail", url)
 
 
     def close(self):
