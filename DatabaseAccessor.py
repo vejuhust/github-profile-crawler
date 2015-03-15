@@ -24,6 +24,22 @@ class DatabaseAccessor():
                 self._db.create_collection(queue)
 
 
+    def _job_create(self, queue_name, content):
+        pass
+
+
+    def _job_take(self, queue_name):
+        pass
+
+
+    def _job_done(self, queue_name):
+        pass
+
+
+    def _job_fail(self, queue_name):
+        pass
+
+
     def close(self):
         self._client.close()
 
