@@ -54,3 +54,48 @@ curl -i https://api.github.com/users/wong2
 * followers
 * following
 * starred
+
+
+## mongodb
+
+### setup
+download: http://www.mongodb.org/downloads
+
+#### install with package manager (failed on ubuntu 14.10)
+```bash
+sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 7F0CEB10
+echo "deb http://repo.mongodb.org/apt/ubuntu "$(lsb_release -sc)"/mongodb-org/3.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-3.0.list
+sudo apt-get update
+sudo apt-get install -y mongodb-org
+```
+
+#### install manually
+```bash
+mkdir -p ~/mongodb && cd ~/mongodb
+curl -O https://fastdl.mongodb.org/linux/mongodb-linux-x86_64-ubuntu1410-clang-3.0.0.tgz
+tar -zxvf mongodb-linux-x86_64-ubuntu1410-clang-3.0.0.tgz
+mkdir -p /opt/mongodb
+cp -R -n mongodb-linux-x86_64-ubuntu1410-clang-3.0.0/* /opt/mongodb
+echo 'export PATH=/opt/mongodb/bin:$PATH' >> ~/.bashrc
+apt-get install libc++-dev
+```
+
+#### run manually
+
+```bash
+screen -S mdb
+mkdir -p /data/mongodb
+mongod --dbpath /data/mongodb
+```
+
+#### python driver
+set up devenv for python3
+```bash
+sudo apt-get install python3-pip python3-dev python3-setuptools
+```
+
+install via pip
+```bash
+sudo pip3 install pymongo
+```
+
