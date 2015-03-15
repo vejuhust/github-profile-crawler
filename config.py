@@ -11,3 +11,6 @@ config_db_pass  = "YOUR_PASSWORD"
 config_db_profile   = "profile"
 config_queue_crawl  = "queue_crawl"
 config_queue_page   = "queue_page"
+
+config_retry_times  = 3
+config_sleep_sec    = 5
