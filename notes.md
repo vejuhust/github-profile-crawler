@@ -10,6 +10,7 @@
     - large: https://github.com/wong2
     - anti-spam email: https://github.com/xudifsd
     - no email: https://github.com/torvalds
+    - fewer info: https://github.com/facelessuser
     - non-follower: https://github.com/Heatwave
     - non-following: https://github.com/Syndim
 * follow pages:
@@ -167,6 +168,7 @@ db.queue_crawl.findAndModify({ query: { "status" : "new" }, sort: {"date": 1 }, 
 
 #### delete
 ```javascript
+db.queue_page.remove({})
 db.queue_crawl.remove({})
 db.queue_crawl.drop()
 
@@ -189,3 +191,13 @@ try to login with auth:
 ```bash
 mongo --port 27017 -u YOUR_USERNAME -p YOUR_PASSWORD --authenticationDatabase gitcrawl
 ```
+
+
+## implement
+
+### python package
+```bash
+sudo pip3 install pymongo
+sudo pip3 install requests
+```
+
