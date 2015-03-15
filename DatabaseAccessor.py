@@ -2,10 +2,10 @@
 """Database Accessor for github-profile-crawler
 """
 
+from pprint import pprint as pp
 from config import *
 from pymongo import MongoClient
 from contextlib import closing
-from pprint import pprint as pp
 from datetime import datetime
 
 
@@ -64,6 +64,10 @@ class DatabaseAccessor():
         return None != self._job_update(config_queue_crawl, "process", "fail", url)
 
 
+    def queue_crawl_reset(self, url):
+        return None != self._job_update(config_queue_crawl, None, "new", url)
+
+
     def queue_page_create(self, url, text):
         return self._job_create(config_queue_page, { 'url': url, 'text': text })
 
@@ -78,6 +82,10 @@ class DatabaseAccessor():
 
     def queue_page_fail(self, url):
         return None != self._job_update(config_queue_page, "process", "fail", url)
+
+
+    def queue_page_reset(self, url):
+        return None != self._job_update(config_queue_page, None, "new", url)
 
 
     def close(self):
