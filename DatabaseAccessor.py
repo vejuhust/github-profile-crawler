@@ -64,6 +64,22 @@ class DatabaseAccessor():
         return None != self._job_update(config_queue_crawl, "process", "fail", url)
 
 
+    def queue_page_create(self, url, text):
+        return self._job_create(config_queue_page, { 'url': url, 'text': text })
+
+
+    def queue_page_take(self):
+        return self._job_update(config_queue_page, "new", "process")
+
+
+    def queue_page_done(self, url, flag):
+        return None != self._job_update(config_queue_page, "process", flag, url)
+
+
+    def queue_page_fail(self, url):
+        return None != self._job_update(config_queue_page, "process", "fail", url)
+
+
     def close(self):
         self._client.close()
 
@@ -77,6 +93,12 @@ def main():
         pp(dal.queue_crawl_done("https://github.com/wong2"))
         pp(dal.queue_crawl_done("https://github.com/thankcreate"))
         pp(dal.queue_crawl_fail("https://github.com/xudifsd"))
+
+        pp(dal.queue_page_create("https://github.com/wong2", "hello wong2!"))
+        pp(dal.queue_page_create("https://github.com/thankcreate", "hello thankcreate!"))
+        pp(dal.queue_page_take())
+        pp(dal.queue_page_done("https://github.com/wong2", "profile"))
+        pp(dal.queue_page_fail("https://github.com/thankcreate"))
 
 
 if __name__ == '__main__':
