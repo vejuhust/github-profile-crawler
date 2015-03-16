@@ -37,7 +37,7 @@ class BaseLogger():
 
 
     def exception(self, message):
-        self._root_logger.exception(message)
+        self._root_logger.exception("Exception: {}".format(message))
 
 
     def warning(self, message):
@@ -51,3 +51,28 @@ class BaseLogger():
     def debug(self, message):
         self._root_logger.debug(message)
 
+
+class Example(BaseLogger):
+    def __init__(self):
+        BaseLogger.__init__(self, logging.DEBUG)
+
+
+    def process(self):
+        self.critical("hello critical")
+        self.error("hello error")
+        try:
+            x = 5 / 0
+        except Exception as e:
+            self.exception("hello exception")
+        self.warning("hello warning")
+        self.info("hello info")
+        self.debug("hello debug")
+
+
+def main():
+    ex = Example()
+    ex.process()
+
+
+if __name__ == '__main__':
+    main()
