@@ -51,7 +51,7 @@ class BaseLogger():
         self._root_logger.debug(msg, *args, **kwargs)
 
 
-    def _log_close(self):
+    def _close_logger(self):
         shutdown()
 
 
