@@ -48,6 +48,10 @@ class DatabaseAccessor():
             sort={ 'date': 1 })
 
 
+    def _job_delete(self, queue_name, filter={}):
+        return self._db[queue_name].remove(filter).get('ok', 0) == 1
+
+
     def queue_crawl_create(self, url):
         return self._job_create(config_queue_crawl, { 'url': url })
 
@@ -64,8 +68,12 @@ class DatabaseAccessor():
         return None != self._job_update(config_queue_crawl, "process", "fail", url)
 
 
-    def queue_crawl_reset(self, url):
+    def queue_crawl_renew(self, url):
         return None != self._job_update(config_queue_crawl, None, "new", url)
+
+
+    def queue_crawl_clear(self):
+        return self._job_delete(config_queue_crawl)
 
 
     def queue_page_create(self, url, text):
@@ -84,8 +92,12 @@ class DatabaseAccessor():
         return None != self._job_update(config_queue_page, "process", "fail", url)
 
 
-    def queue_page_reset(self, url):
+    def queue_page_renew(self, url):
         return None != self._job_update(config_queue_page, None, "new", url)
+
+
+    def queue_page_clear(self):
+        return self._job_delete(config_queue_page)
 
 
     def close(self):
