@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-"""Web crawler for github-profile-crawler"""
+"""Web crawler for github profile crawler"""
 
 from requests import get, codes
 from contextlib import closing
 from time import sleep
-from config import config_retry_times, config_sleep_sec
+from config import config_crawl_retry, config_crawl_sleep
 from DatabaseAccessor import DatabaseAccessor
 
 
@@ -18,7 +18,7 @@ class Crawler():
         job = self._db_conn.queue_crawl_take()
         if job != None:
             url = job['url']
-            retry_times = config_retry_times
+            retry_times = config_crawl_retry
             while retry_times > 0:
                 text = self._crawl_page(url)
                 if text == None:

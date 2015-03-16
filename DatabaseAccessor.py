@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Database Accessor for github-profile-crawler"""
+"""Database Accessor for github profile crawler"""
 
 from config import *
 from pymongo import MongoClient

@@ -1,2 +1,2 @@
-# github-profile-crawler
-Web crawler for GitHub user profile pages
+# github profile crawler
+Distributed web crawler for GitHub user profile pages
