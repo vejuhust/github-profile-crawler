@@ -28,27 +28,27 @@ class BaseLogger():
         return console_handler
 
 
-    def critical(self, message):
+    def _log_critical(self, message):
         self._root_logger.critical(message)
 
 
-    def error(self, message):
+    def _log_error(self, message):
         self._root_logger.error(message)
 
 
-    def exception(self, message):
+    def _log_exception(self, message):
         self._root_logger.exception("Exception: {}".format(message))
 
 
-    def warning(self, message):
+    def _log_warning(self, message):
         self._root_logger.warning(message)
 
 
-    def info(self, message):
+    def _log_info(self, message):
         self._root_logger.info(message)
 
 
-    def debug(self, message):
+    def _log_debug(self, message):
         self._root_logger.debug(message)
 
 
@@ -58,15 +58,15 @@ class Example(BaseLogger):
 
 
     def process(self):
-        self.critical("hello critical")
-        self.error("hello error")
+        self._log_critical("hello critical")
+        self._log_error("hello error")
         try:
             x = 5 / 0
         except Exception as e:
-            self.exception("hello exception")
-        self.warning("hello warning")
-        self.info("hello info")
-        self.debug("hello debug")
+            self._log_exception("hello exception")
+        self._log_warning("hello warning")
+        self._log_info("hello info")
+        self._log_debug("hello debug")
 
 
 def main():
