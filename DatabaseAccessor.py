@@ -1,8 +1,6 @@
 #!/usr/bin/env python3
-"""Database Accessor for github-profile-crawler
-"""
+"""Database Accessor for github profile crawler"""
 
-from pprint import pprint as pp
 from config import *
 from pymongo import MongoClient
 from contextlib import closing
@@ -40,6 +38,8 @@ class DatabaseAccessor():
         query = {}
         if url != None:
             query['url'] = url
+        else:
+            query['url'] = { '$exists': True, '$ne': None }
         if status_old != None:
             query['status'] = status_old
         return self._db[queue_name].find_and_modify(
@@ -93,20 +93,7 @@ class DatabaseAccessor():
 
 
 def main():
-    with closing(DatabaseAccessor()) as dal:
-        pp(dal.queue_crawl_create("https://github.com/wong2"))
-        pp(dal.queue_crawl_create("https://github.com/thankcreate"))
-        pp(dal.queue_crawl_create("https://github.com/xudifsd"))
-        pp(dal.queue_crawl_take())
-        pp(dal.queue_crawl_done("https://github.com/wong2"))
-        pp(dal.queue_crawl_done("https://github.com/thankcreate"))
-        pp(dal.queue_crawl_fail("https://github.com/xudifsd"))
-
-        pp(dal.queue_page_create("https://github.com/wong2", "hello wong2!"))
-        pp(dal.queue_page_create("https://github.com/thankcreate", "hello thankcreate!"))
-        pp(dal.queue_page_take())
-        pp(dal.queue_page_done("https://github.com/wong2", "profile"))
-        pp(dal.queue_page_fail("https://github.com/thankcreate"))
+    pass
 
 
 if __name__ == '__main__':

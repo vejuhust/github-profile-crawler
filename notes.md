@@ -1,4 +1,4 @@
-# github-profile-crawler dev notes
+# github profile crawler dev notes
 
 
 ## references
