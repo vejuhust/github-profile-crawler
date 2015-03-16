@@ -33,7 +33,7 @@
 
 ### roles
 * crawler
-* classifer
+* assigner
 * worker_profile
 * worker_follow
 
@@ -41,8 +41,8 @@
 * queue_crawl
 * queue_page
 
-### database
-github api response:
+### database/profile
+reference - github api response:
 ```bash
 curl -i https://api.github.com/users/wong2
 ```
