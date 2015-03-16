@@ -3,7 +3,6 @@
 
 from time import strftime
 
-strftime('%Y')
 
 config_db_addr  = "127.0.0.1"
 config_db_port  = 27017
