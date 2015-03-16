@@ -1,30 +1,29 @@
 #!/usr/bin/env python3
 """Basic logger to support other workers for github profile crawler"""
 
-import sys
-import logging
-from contextlib import closing
+from sys import stdout
+from logging import INFO, DEBUG, Formatter, getLogger, FileHandler, StreamHandler
 from config import config_log_file
 
 
 class BaseLogger():
-    def __init__(self, level=logging.INFO):
-        self._log_formatter = logging.Formatter("%(asctime)s [%(module)s][%(process)d][%(levelname)s] %(message)s")
-        self._root_logger = logging.getLogger()
+    def __init__(self, level=INFO):
+        log_formatter = Formatter("%(asctime)s [%(module)s][%(process)d][%(levelname)s] %(message)s")
+        self._root_logger = getLogger()
         self._root_logger.setLevel(level)
-        self._root_logger.addHandler(self._file_handler())
-        self._root_logger.addHandler(self._console_handler())
+        self._root_logger.addHandler(self._file_handler(log_formatter))
+        self._root_logger.addHandler(self._console_handler(log_formatter))
 
 
-    def _file_handler(self):
-        file_handler = logging.FileHandler(config_log_file)
-        file_handler.setFormatter(self._log_formatter)
+    def _file_handler(self, log_formatter):
+        file_handler = FileHandler(config_log_file)
+        file_handler.setFormatter(log_formatter)
         return file_handler
 
 
-    def _console_handler(self):
-        console_handler = logging.StreamHandler(sys.stdout)
-        console_handler.setFormatter(self._log_formatter)
+    def _console_handler(self, log_formatter):
+        console_handler = StreamHandler(stdout)
+        console_handler.setFormatter(log_formatter)
         return console_handler
 
 
@@ -54,7 +53,7 @@ class BaseLogger():
 
 class Example(BaseLogger):
     def __init__(self):
-        BaseLogger.__init__(self, logging.DEBUG)
+        BaseLogger.__init__(self, DEBUG)
 
 
     def process(self):
