@@ -2,7 +2,7 @@
 """Basic logger to support other workers for github profile crawler"""
 
 from sys import stdout
-from logging import INFO, DEBUG, Formatter, getLogger, FileHandler, StreamHandler
+from logging import INFO, DEBUG, Formatter, getLogger, FileHandler, StreamHandler, shutdown
 from config import config_log_file
 
 
@@ -49,6 +49,10 @@ class BaseLogger():
 
     def _log_debug(self, msg, *args, **kwargs):
         self._root_logger.debug(msg, *args, **kwargs)
+
+
+    def _log_close(self):
+        shutdown()
 
 
 def main():
