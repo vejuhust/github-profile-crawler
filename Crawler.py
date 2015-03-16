@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 """Web crawler for github-profile-crawler"""
 
-from pprint import pprint as pp
 from requests import get, codes
 from contextlib import closing
 from time import sleep
@@ -46,19 +45,7 @@ class Crawler():
 
 
 def main():
-    with closing(DatabaseAccessor()) as dal:
-        pp(dal.queue_crawl_create("https://github.com/wong2"))
-        pp(dal.queue_crawl_create("https://github.com/thankcreate"))
-        pp(dal.queue_crawl_create("https://github.com/xudifsd"))
-        with closing(Crawler()) as crawler:
-            i = 5
-            while i > 0:
-                crawler.process()
-                sleep(config_sleep_sec)
-                i -= 1
-        pp(dal.queue_crawl_reset("https://github.com/wong2"))
-        pp(dal.queue_crawl_reset("https://github.com/thankcreate"))
-        pp(dal.queue_crawl_reset("https://github.com/xudifsd"))
+    pass
 
 
 if __name__ == '__main__':
