@@ -3,6 +3,7 @@
 
 from config import *
 from contextlib import closing
+from Assigner import Assigner
 from Crawler import Crawler
 from DatabaseAccessor import DatabaseAccessor
 from time import sleep
@@ -48,9 +49,24 @@ def clear_queue_crawl_and_page():
         print("clear page - {}".format(dal.queue_page_clear()))
 
 
+def run_crawler(times=5):
+    with closing(Crawler()) as crawler:
+        for _ in range(times):
+            print("crawl - {}".format(crawler.process()))
+            sleep(config_crawl_sleep)
+
+
+def run_assigner(times=5):
+    with closing(Assigner()) as assigner:
+        for _ in range(times):
+            print("assign - {}".format(assigner.process()))
+
+
 def main():
     add_urls_to_queue_crawl()
-    clear_queue_crawl_and_page()
+    #run_crawler(len(urls))
+    run_assigner(len(urls))
+    #clear_queue_crawl_and_page()
 
 
 if __name__ == '__main__':
