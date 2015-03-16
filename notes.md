@@ -159,8 +159,10 @@ db.queue_crawl.update(
 ```javascript
 db.queue_page.find().pretty()
 db.queue_page.find({}, { "text": 0 }).sort( { "date": 1 } ).pretty()
+db.queue_page.find({}, { "url": 1, "status": 1, "_id": 0 }).sort( { "date": 1 } ).pretty()
 
 db.queue_crawl.find().sort( { "date": 1 } ).pretty()
+db.queue_crawl.find({}, { "url": 1, "status": 1, "_id": 0 }).sort( { "date": 1 } ).pretty()
 db.queue_crawl.find({ "status": "new" }).pretty()
 db.queue_crawl.find({ "url": "https://github.com/wong2" }).pretty()
 db.queue_crawl.validate()
