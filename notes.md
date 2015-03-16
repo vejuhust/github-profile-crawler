@@ -58,6 +58,7 @@ curl -i https://api.github.com/users/wong2
 * starred
 
 
+
 ## mongodb
 
 ### setup
@@ -156,7 +157,10 @@ db.queue_crawl.update(
 
 #### read
 ```javascript
-db.queue_crawl.find().pretty()
+db.queue_page.find().pretty()
+db.queue_page.find({}, { "text": 0 }).sort( { "date": 1 } ).pretty()
+
+db.queue_crawl.find().sort( { "date": 1 } ).pretty()
 db.queue_crawl.find({ "status": "new" }).pretty()
 db.queue_crawl.find({ "url": "https://github.com/wong2" }).pretty()
 db.queue_crawl.validate()
@@ -164,19 +168,22 @@ db.queue_crawl.validate()
 
 #### update
 ```javascript
+db.queue_page.update({ "status": "process" },  { $set: { "status": "new" } }, { "multi": true })
+db.queue_crawl.update({ "url": "https://github.com/wong2" },  { $set: { "status": "new" } })
 db.queue_crawl.findAndModify({ query: { "status" : "new" }, sort: {"date": 1 },  update: {$set: { "status" : "process" }}})
 ```
 
 #### delete
 ```javascript
 db.queue_page.remove({})
+db.queue_page.remove({ "_id" : ObjectId("550689a1ca36cd274301f6e0") })
 db.queue_crawl.remove({})
 db.queue_crawl.drop()
 
 db.dropDatabase()
 ```
 
-#### add user
+#### create user
 ```javascript
 use gitcrawl
 db.createUser(
@@ -200,6 +207,7 @@ mongo --port 27017 -u YOUR_USERNAME -p YOUR_PASSWORD --authenticationDatabase gi
 ```bash
 sudo pip3 install pymongo
 sudo pip3 install requests
+sudo pip3 install beautifulsoup4
 ```
 
 
