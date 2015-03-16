@@ -28,28 +28,28 @@ class BaseLogger():
         return console_handler
 
 
-    def _log_critical(self, message):
-        self._root_logger.critical(message)
+    def _log_critical(self, msg, *args, **kwargs):
+        self._root_logger.critical(msg, *args, **kwargs)
 
 
-    def _log_error(self, message):
-        self._root_logger.error(message)
+    def _log_error(self, msg, *args, **kwargs):
+        self._root_logger.error(msg, *args, **kwargs)
 
 
-    def _log_exception(self, message):
-        self._root_logger.exception("Exception: {}".format(message))
+    def _log_exception(self, msg, *args, **kwargs):
+        self._root_logger.exception("Exception: {}".format(msg, *args, **kwargs))
 
 
-    def _log_warning(self, message):
-        self._root_logger.warning(message)
+    def _log_warning(self, msg, *args, **kwargs):
+        self._root_logger.warning(msg, *args, **kwargs)
 
 
-    def _log_info(self, message):
-        self._root_logger.info(message)
+    def _log_info(self, msg, *args, **kwargs):
+        self._root_logger.info(msg, *args, **kwargs)
 
 
-    def _log_debug(self, message):
-        self._root_logger.debug(message)
+    def _log_debug(self, msg, *args, **kwargs):
+        self._root_logger.debug(msg, *args, **kwargs)
 
 
 class Example(BaseLogger):
@@ -58,14 +58,14 @@ class Example(BaseLogger):
 
 
     def process(self):
-        self._log_critical("hello critical")
+        self._log_critical("hello critical %s", "yes!")
         self._log_error("hello error")
         try:
             x = 5 / 0
         except Exception as e:
-            self._log_exception("hello exception")
+            self._log_exception("hello exception %s", "oops!")
         self._log_warning("hello warning")
-        self._log_info("hello info")
+        self._log_info("hello info - hao%d", 123)
         self._log_debug("hello debug")
 
 
