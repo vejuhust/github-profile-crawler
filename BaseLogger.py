@@ -51,26 +51,8 @@ class BaseLogger():
         self._root_logger.debug(msg, *args, **kwargs)
 
 
-class Example(BaseLogger):
-    def __init__(self):
-        BaseLogger.__init__(self, DEBUG)
-
-
-    def process(self):
-        self._log_critical("hello critical %s", "yes!")
-        self._log_error("hello error")
-        try:
-            x = 5 / 0
-        except Exception as e:
-            self._log_exception("hello exception %s", "oops!")
-        self._log_warning("hello warning")
-        self._log_info("hello info - hao%d", 123)
-        self._log_debug("hello debug")
-
-
 def main():
-    ex = Example()
-    ex.process()
+    pass
 
 
 if __name__ == '__main__':
