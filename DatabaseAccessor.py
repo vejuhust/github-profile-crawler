@@ -38,6 +38,8 @@ class DatabaseAccessor():
         query = {}
         if url != None:
             query['url'] = url
+        else:
+            query['url'] = { '$exists': True, '$ne': None }
         if status_old != None:
             query['status'] = status_old
         return self._db[queue_name].find_and_modify(
