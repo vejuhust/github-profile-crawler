@@ -63,10 +63,10 @@ def run_assigner(times=5):
 
 
 def main():
+    clear_queue_crawl_and_page()
     add_urls_to_queue_crawl()
     run_crawler(len(urls))
     run_assigner(len(urls))
-    clear_queue_crawl_and_page()
 
 
 if __name__ == '__main__':
