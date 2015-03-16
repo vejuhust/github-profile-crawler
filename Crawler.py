@@ -4,7 +4,7 @@
 from requests import get, codes
 from contextlib import closing
 from time import sleep
-from config import config_crawl_retry, config_crawl_sleep
+from config import config_crawl_retry, config_crawl_timeout, config_crawl_sleep
 from DatabaseAccessor import DatabaseAccessor
 
 
@@ -35,9 +35,12 @@ class Crawler():
 
 
     def _crawl_page(self, url):
-        resp = get(url)
-        if resp.status_code == codes.ok:
-            return resp.text
+        try:
+            resp = get(url, timeout=config_crawl_timeout)
+            if resp.status_code == codes.ok:
+                return resp.text
+        except Exception as e:
+            pass
 
 
     def close(self):

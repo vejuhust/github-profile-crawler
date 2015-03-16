@@ -201,6 +201,7 @@ mongo --port 27017 -u YOUR_USERNAME -p YOUR_PASSWORD --authenticationDatabase gi
 ```
 
 
+
 ## implement
 
 ### python package
@@ -208,6 +209,34 @@ mongo --port 27017 -u YOUR_USERNAME -p YOUR_PASSWORD --authenticationDatabase gi
 sudo pip3 install pymongo
 sudo pip3 install requests
 sudo pip3 install beautifulsoup4
+```
+
+### page samples
+```
+https://github.com/bluesilence/followers
+https://github.com/bluesilence/following
+https://github.com/facelessuser
+https://github.com/graphlab-code
+https://github.com/Heatwave
+https://github.com/Heatwave/followers
+https://github.com/lmmsoft/following
+https://github.com/lmmsoft/following?page=2
+https://github.com/lmmsoft/following?page=3
+https://github.com/robots.txt
+https://github.com/SublimeText
+https://github.com/Syndim
+https://github.com/Syndim/following
+https://github.com/thankcreate
+https://github.com/torvalds
+https://github.com/wong2
+https://github.com/wong2/followers
+https://github.com/wong2/followers?page=11
+https://github.com/wong2/followers?page=2
+https://github.com/wong2/followers?page=3
+https://github.com/xudifsd
+https://www.google.com/
+https://www.baidu.com/
+https://www.bing.com/
 ```
 
 
