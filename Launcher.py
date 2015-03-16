@@ -7,6 +7,7 @@ from Crawler import Crawler
 from DatabaseAccessor import DatabaseAccessor
 from time import sleep
 
+
 urls = [
     "https://github.com/bluesilence/followers",
     "https://github.com/bluesilence/following",
@@ -38,12 +39,18 @@ urls = [
 def add_urls_to_queue_crawl():
     with closing(DatabaseAccessor()) as dal:
         for url in urls:
-            dal.queue_crawl_create(url)
+            print("add {} - {}".format(url, dal.queue_crawl_create(url)))
 
+
+def clear_queue_crawl_and_page():
+    with closing(DatabaseAccessor()) as dal:
+        print("clear crawl - {}".format(dal.queue_crawl_clear()))
+        print("clear page - {}".format(dal.queue_page_clear()))
 
 
 def main():
     add_urls_to_queue_crawl()
+    clear_queue_crawl_and_page()
 
 
 if __name__ == '__main__':
