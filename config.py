@@ -11,5 +11,6 @@ config_db_profile   = "profile"
 config_queue_crawl  = "queue_crawl"
 config_queue_page   = "queue_page"
 
-config_crawl_retry  = 3
-config_crawl_sleep  = 10
+config_crawl_retry      = 3
+config_crawl_sleep      = 10
+config_crawl_timeout    = 10
