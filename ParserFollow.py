@@ -22,7 +22,6 @@ class ParserFollow(BaseLogger):
             url = job['url']
             text = job.get('text', "")
             links = self._parse_user_links(url, text)
-            self._log_info(url)
             if links:
                 for link in links:
                     self._db_conn.queue_crawl_create(link)
