@@ -16,18 +16,21 @@ class ParserProfile(BaseLogger):
 
 
     def process(self):
-        status = False
+        status_profile, status_like = False, False
         job = self._db_conn.queue_page_take_profile()
-        # self._db_conn._job_update(config_queue_page, None, "profile", job['url'])
         if job != None:
             url = job['url']
             text = job.get('text', "")
             profile, like = self._parse_profile_and_like(url, text)
-            self._log_info(profile)
-            self._log_info(like)
             if profile:
-                status = True
-        return status
+                self._db_conn.profile_create(profile)
+                self._db_conn.queue_page_done_profile(url)
+                status_profile = True
+            if like:
+                for key in like:
+                    self._db_conn.queue_crawl_create(like[key])
+                status_like = True
+        return status_profile, status_like
 
 
     def _parse_profile_and_like(self, url, text):
@@ -35,6 +38,7 @@ class ParserProfile(BaseLogger):
         profile = {}
         like = {}
         soup = BeautifulSoup(text)
+        profile["url"] = url
         profile["login"] = self._parse_tag_text_by_itemprop(soup, "additionalName")
         profile["name"] = self._parse_tag_text_by_itemprop(soup, "name")
         profile["company"] = self._parse_tag_text_by_itemprop(soup, "worksFor")
@@ -51,7 +55,7 @@ class ParserProfile(BaseLogger):
     def _purge_data_dict(self, data, prefix = None):
         purged = {}
         for key in data:
-            if data[key] != None and len(data[key]) > 0:
+            if data[key] != None and len(data[key].strip()) > 0:
                 if prefix == None:
                     purged[key] = data[key].strip()
                 else:
