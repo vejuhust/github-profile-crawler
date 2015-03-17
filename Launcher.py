@@ -4,6 +4,7 @@
 from Assigner import Assigner
 from Crawler import Crawler
 from ParserProfile import ParserProfile
+from ParserFollow import ParserFollow
 from DatabaseAccessor import DatabaseAccessor
 from config import *
 from contextlib import closing
@@ -22,20 +23,20 @@ urls = [
     "https://github.com/xudifsd",
     "https://github.com/torvalds",
     "https://github.com/thankcreate",
-    "https://github.com/Syndim/following",
-    "https://github.com/Syndim",
-    "https://github.com/SBeator",
-    "https://github.com/SublimeText",
-    "https://github.com/robots.txt",
-    "https://github.com/lmmsoft/following?page=3",
-    "https://github.com/lmmsoft/following?page=2",
-    "https://github.com/lmmsoft/following",
-    "https://github.com/Heatwave/followers",
-    "https://github.com/Heatwave",
-    "https://github.com/graphlab-code",
-    "https://github.com/facelessuser",
-    "https://github.com/bluesilence/following",
-    "https://github.com/bluesilence/followers",
+    # "https://github.com/Syndim/following",
+    # "https://github.com/Syndim",
+    # "https://github.com/SBeator",
+    # "https://github.com/SublimeText",
+    # "https://github.com/robots.txt",
+    # "https://github.com/lmmsoft/following?page=3",
+    # "https://github.com/lmmsoft/following?page=2",
+    # "https://github.com/lmmsoft/following",
+    # "https://github.com/Heatwave/followers",
+    # "https://github.com/Heatwave",
+    # "https://github.com/graphlab-code",
+    # "https://github.com/facelessuser",
+    # "https://github.com/bluesilence/following",
+    # "https://github.com/bluesilence/followers",
 ]
 
 
@@ -50,6 +51,7 @@ class Launcher():
         self.run_crawler(len(urls))
         self.run_assigner(len(urls))
         self.run_parser_profile(len(urls))
+        self.run_parser_follow(len(urls))
 
 
     def add_urls_to_queue_crawl(self, urls):
@@ -82,6 +84,12 @@ class Launcher():
         with closing(ParserProfile()) as parser:
             for _ in range(times):
                 print("parse profile - {}".format(parser.process()))
+
+
+    def run_parser_follow(self, times=5):
+        with closing(ParserFollow()) as parser:
+            for _ in range(times):
+                print("parse follow - {}".format(parser.process()))
 
 
     def close(self):
