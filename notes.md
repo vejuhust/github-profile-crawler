@@ -206,12 +206,18 @@ mongo --port 27017 -u YOUR_USERNAME -p YOUR_PASSWORD --authenticationDatabase gi
 
 ## implement
 
-### python package
+### python packages
 ```bash
 sudo pip3 install pymongo
 sudo pip3 install requests
 sudo pip3 install beautifulsoup4
 ```
+
+
+### python documents
+* pymongo: http://api.mongodb.org/python/current/index.html
+* logging: https://docs.python.org/3/library/logging.html
+
 
 ### page samples
 ```
