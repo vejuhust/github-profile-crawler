@@ -45,7 +45,7 @@ class ParserProfile(BaseLogger):
         profile["blog"] = self._parse_tag_text_by_itemprop(soup, "url")
         profile["email"] = self._parse_tag_string_by_class(soup, "email")
         profile["join_at"] = self._parse_tag_datetime_by_class(soup, "join-date")
-        profile["followers"], like["followers"] = self._parse_tag_count_and_link(soup, "Followers")
+        profile["follower"], like["follower"] = self._parse_tag_count_and_link(soup, "Follower")
         profile["following"], like["following"] = self._parse_tag_count_and_link(soup, "Following")
         profile["starred"], _ = self._parse_tag_count_and_link(soup, "Starred")
         return self._purge_data_dict(profile), self._purge_data_dict(like, config_parse_domain)
@@ -85,7 +85,7 @@ class ParserProfile(BaseLogger):
         count = None
         link = None
         for tag in tags:
-            if tag.find(class_="text-muted").text == text:
+            if text in tag.find(class_="text-muted").text:
                 count = tag.find(class_="vcard-stat-count").text
                 link = tag.get('href')
                 break
