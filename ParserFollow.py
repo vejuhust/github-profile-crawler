@@ -18,32 +18,23 @@ class ParserFollow(BaseLogger):
     def process(self):
         status = False
         job = self._db_conn.queue_page_take_follow()
+        self._db_conn._job_update(config_queue_page, None, "follow", job['url'])
         if job != None:
             url = job['url']
             text = job.get('text', "")
             links = self._parse_user_links(url, text)
-            if links:
-                for link in links:
-                    self._db_conn.queue_crawl_create(link)
-                self._db_conn.queue_page_done_follow(url)
-                status = True
+            self._log_info(url)
+            # if links:
+            #     for link in links:
+            #         self._db_conn.queue_crawl_create(link)
+            #     self._db_conn.queue_page_done_follow(url)
+            #     status = True
         return status
 
 
     def _parse_user_links(self, url, text):
         links = []
         soup = BeautifulSoup(text)
-        # profile["url"] = url
-        # profile["login"] = self._parse_tag_text_by_itemprop(soup, "additionalName")
-        # profile["name"] = self._parse_tag_text_by_itemprop(soup, "name")
-        # profile["company"] = self._parse_tag_text_by_itemprop(soup, "worksFor")
-        # profile["location"] = self._parse_tag_text_by_itemprop(soup, "homeLocation")
-        # profile["blog"] = self._parse_tag_text_by_itemprop(soup, "url")
-        # profile["email"] = self._parse_tag_string_by_class(soup, "email")
-        # profile["join_at"] = self._parse_tag_datetime_by_class(soup, "join-date")
-        # profile["follower"], like["follower"] = self._parse_tag_count_and_link(soup, "Follower")
-        # profile["following"], like["following"] = self._parse_tag_count_and_link(soup, "Following")
-        # profile["starred"], _ = self._parse_tag_count_and_link(soup, "Starred")
         return links
 
 
@@ -82,7 +73,10 @@ class ParserFollow(BaseLogger):
 
 
 def main():
-    pass
+    with closing(ParserFollow()) as parser:
+        for _ in range(1):
+            print("No. {} --".format(_ + 1))
+            pprint(parser.process())
 
 
 if __name__ == '__main__':
