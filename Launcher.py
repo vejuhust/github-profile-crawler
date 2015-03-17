@@ -4,6 +4,7 @@
 from Assigner import Assigner
 from BaseLogger import BaseLogger
 from Crawler import Crawler
+from ParserProfile import ParserProfile
 from DatabaseAccessor import DatabaseAccessor
 from config import *
 from contextlib import closing
@@ -49,6 +50,7 @@ class Launcher(BaseLogger):
         self.add_urls_to_queue_crawl(urls)
         self.run_crawler(len(urls))
         self.run_assigner(len(urls))
+        self.run_parser_profile(len(urls))
 
 
     def add_urls_to_queue_crawl(self, urls):
@@ -74,6 +76,12 @@ class Launcher(BaseLogger):
         with closing(Assigner()) as assigner:
             for _ in range(times):
                 self._log_info("assign - {}".format(assigner.process()))
+
+
+    def run_parser_profile(self, times=5):
+        with closing(ParserProfile()) as parser:
+            for _ in range(times):
+                self._log_info("parse profile - {}".format(parser.process()))
 
 
     def close(self):
