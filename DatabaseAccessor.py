@@ -56,6 +56,10 @@ class DatabaseAccessor():
         return self._job_create(config_db_profile, profile)
 
 
+    def profile_clear(self):
+        return self._job_delete(config_db_profile)
+
+
     def queue_crawl_create(self, url):
         return self._job_create(config_queue_crawl, { 'url': url })
 

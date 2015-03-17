@@ -46,7 +46,7 @@ class Launcher(BaseLogger):
 
 
     def process(self, urls):
-        self.clear_queue_crawl_and_page()
+        self.clear_queue_crawl_page_profile()
         self.add_urls_to_queue_crawl(urls)
         self.run_crawler(len(urls))
         self.run_assigner(len(urls))
@@ -59,10 +59,11 @@ class Launcher(BaseLogger):
                 self._log_info("add {} - {}".format(url, dal.queue_crawl_create(url)))
 
 
-    def clear_queue_crawl_and_page(self):
+    def clear_queue_crawl_page_profile(self):
         with closing(DatabaseAccessor()) as dal:
             self._log_info("clear crawl - {}".format(dal.queue_crawl_clear()))
             self._log_info("clear page - {}".format(dal.queue_page_clear()))
+            self._log_info("clear profile - {}".format(dal.profile_clear()))
 
 
     def run_crawler(self, times=5):
