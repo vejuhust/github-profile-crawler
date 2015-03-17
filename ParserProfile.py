@@ -34,7 +34,6 @@ class ParserProfile(BaseLogger):
 
 
     def _parse_profile_and_like(self, url, text):
-        self._log_info("parse {} now".format(url))
         profile = {}
         like = {}
         soup = BeautifulSoup(text)
@@ -94,15 +93,11 @@ class ParserProfile(BaseLogger):
 
 
     def close(self):
-        self._log_info("bye bye!")
         self._close_logger()
 
 
 def main():
-    with closing(ParserProfile()) as parser:
-        for _ in range(10):
-            print("No. {} --".format(_ + 1))
-            pprint(parser.process())
+    pass
 
 
 if __name__ == '__main__':
