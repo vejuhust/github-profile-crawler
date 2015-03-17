@@ -2,8 +2,8 @@
 """Web crawler for github profile crawler"""
 
 from Assigner import Assigner
-from BaseLogger import BaseLogger
 from Crawler import Crawler
+from ParserProfile import ParserProfile
 from DatabaseAccessor import DatabaseAccessor
 from config import *
 from contextlib import closing
@@ -39,46 +39,53 @@ urls = [
 ]
 
 
-class Launcher(BaseLogger):
+class Launcher():
     def __init__(self):
-        BaseLogger.__init__(self, self.__class__.__name__)
+        pass
 
 
     def process(self, urls):
-        self.clear_queue_crawl_and_page()
+        self.clear_queue_crawl_page_profile()
         self.add_urls_to_queue_crawl(urls)
         self.run_crawler(len(urls))
         self.run_assigner(len(urls))
+        self.run_parser_profile(len(urls))
 
 
     def add_urls_to_queue_crawl(self, urls):
         with closing(DatabaseAccessor()) as dal:
             for url in urls:
-                self._log_info("add {} - {}".format(url, dal.queue_crawl_create(url)))
+                print("add {} - {}".format(url, dal.queue_crawl_create(url)))
 
 
-    def clear_queue_crawl_and_page(self):
+    def clear_queue_crawl_page_profile(self):
         with closing(DatabaseAccessor()) as dal:
-            self._log_info("clear crawl - {}".format(dal.queue_crawl_clear()))
-            self._log_info("clear page - {}".format(dal.queue_page_clear()))
+            print("clear crawl - {}".format(dal.queue_crawl_clear()))
+            print("clear page - {}".format(dal.queue_page_clear()))
+            print("clear profile - {}".format(dal.profile_clear()))
 
 
     def run_crawler(self, times=5):
         with closing(Crawler()) as crawler:
             for _ in range(times):
-                self._log_info("crawl - {}".format(crawler.process()))
+                print("crawl - {}".format(crawler.process()))
                 sleep(config_crawl_sleep)
 
 
     def run_assigner(self, times=5):
         with closing(Assigner()) as assigner:
             for _ in range(times):
-                self._log_info("assign - {}".format(assigner.process()))
+                print("assign - {}".format(assigner.process()))
+
+
+    def run_parser_profile(self, times=5):
+        with closing(ParserProfile()) as parser:
+            for _ in range(times):
+                print("parse profile - {}".format(parser.process()))
 
 
     def close(self):
-        self._log_info("bye bye!")
-        self._close_logger()
+        pass
 
 
 def main():
