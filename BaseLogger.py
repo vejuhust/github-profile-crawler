@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
 """Basic logger to support other workers for github profile crawler"""
 
-from sys import stdout, _getframe
+from sys import stdout
 from logging import INFO, DEBUG, Formatter, getLogger, FileHandler, StreamHandler, shutdown
 from config import config_log_file
 
 
 class BaseLogger():
-    def __init__(self, level=INFO):
-        log_formatter = Formatter("%(asctime)s [{}][%(process)d][%(levelname)s] %(message)s".format(_getframe(1).f_locals['self'].__class__.__name__))
+    def __init__(self, caller_name="%(module)s", level=INFO):
+        log_formatter = Formatter("%(asctime)s [{}][%(process)d][%(levelname)s] %(message)s".format(caller_name))
         self._root_logger = getLogger()
         self._root_logger.setLevel(level)
         self._root_logger.addHandler(self._file_handler(log_formatter))
