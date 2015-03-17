@@ -23,6 +23,8 @@ class ParserFollow(BaseLogger):
             url = job['url']
             text = job.get('text', "")
             links = self._parse_user_links(url, text)
+            pprint(links)
+            pprint(len(links))
             self._log_info(url)
             # if links:
             #     for link in links:
@@ -35,7 +37,31 @@ class ParserFollow(BaseLogger):
     def _parse_user_links(self, url, text):
         links = []
         soup = BeautifulSoup(text)
-        return links
+
+        tags = soup.find_all(class_="follow-list-item")
+        for tag in tags:
+            if tag.find_all("a"):
+                links.append(tag.find("a").get('href'))
+
+        pagination = soup.find(class_="pagination")
+        if pagination:
+            tags = pagination.find_all("a")
+            for tag in tags:
+                if "Next" == tag.text:
+                    links.append(tag.get('href'))
+
+        return self._purge_data_list(links, config_parse_domain)
+
+
+    def _purge_data_list(self, data, prefix = None):
+        purged = []
+        for item in data:
+            if item != None and len(item.strip()) > 0:
+                if prefix == None or prefix in item:
+                    purged.append(item.strip())
+                else:
+                    purged.append(prefix + item.strip())
+        return purged
 
 
     def _parse_tag_text_by_itemprop(self, soup, item_name):
@@ -57,11 +83,11 @@ class ParserFollow(BaseLogger):
 
 
     def _parse_tag_count_and_link(self, soup, text):
-        tags = soup.find_all(class_="vcard-stat")
+        tags = soup.find_all(class_="pagination")
         count = None
         link = None
         for tag in tags:
-            if text in tag.find(class_="text-muted").text:
+            if "Next" in tag.find(rel="nofollow").text:
                 count = tag.find(class_="vcard-stat-count").text
                 link = tag.get('href')
                 break
