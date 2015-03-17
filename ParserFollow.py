@@ -38,15 +38,13 @@ class ParserFollow(BaseLogger):
         links = []
         soup = BeautifulSoup(text)
 
-        tags = soup.find_all(class_="follow-list-item")
-        for tag in tags:
+        for tag in soup.find_all(class_="follow-list-item"):
             if tag.find_all("a"):
                 links.append(tag.find("a").get('href'))
 
         pagination = soup.find(class_="pagination")
         if pagination:
-            tags = pagination.find_all("a")
-            for tag in tags:
+            for tag in pagination.find_all("a"):
                 if "Next" == tag.text:
                     links.append(tag.get('href'))
 
