@@ -84,6 +84,14 @@ class DatabaseAccessor():
         return self._job_update(config_queue_page, "new", "process")
 
 
+    def queue_page_take_profile(self):
+        return self._job_update(config_queue_page, "profile", "parse")
+
+
+    def queue_page_take_follow(self):
+        return self._job_update(config_queue_page, "follow", "parse")
+
+
     def queue_page_done(self, url, flag):
         return None != self._job_update(config_queue_page, "process", flag, url)
 
