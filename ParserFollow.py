@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Follower/Following page parser for github profile crawler"""
+"""Follower/following page parser for github profile crawler"""
 
 from BaseLogger import BaseLogger
 from DatabaseAccessor import DatabaseAccessor
@@ -18,7 +18,6 @@ class ParserFollow(BaseLogger):
     def process(self):
         status = False
         job = self._db_conn.queue_page_take_follow()
-        # self._db_conn._job_update(config_queue_page, None, "follow", job['url'])
         if job != None:
             url = job['url']
             text = job.get('text', "")
@@ -65,10 +64,7 @@ class ParserFollow(BaseLogger):
 
 
 def main():
-    with closing(ParserFollow()) as parser:
-        for _ in range(30):
-            print("No. {} --".format(_ + 1))
-            pprint(parser.process())
+    pass
 
 
 if __name__ == '__main__':
