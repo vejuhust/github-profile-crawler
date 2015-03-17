@@ -220,7 +220,7 @@ sudo pip3 install beautifulsoup4
 ### python documents
 * pymongo: http://api.mongodb.org/python/current/index.html
 * logging: https://docs.python.org/3/library/logging.html
-* beautifulsoup: http://www.crummy.com/software/BeautifulSoup/
+* beautifulsoup: http://www.crummy.com/software/BeautifulSoup/bs4/doc/
 
 
 ### page samples
