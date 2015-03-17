@@ -52,6 +52,10 @@ class DatabaseAccessor():
         return self._db[queue_name].remove(filter).get('ok', 0) == 1
 
 
+    def profile_create(self, profile):
+        return self._job_create(config_db_profile, profile)
+
+
     def queue_crawl_create(self, url):
         return self._job_create(config_queue_crawl, { 'url': url })
 
@@ -84,8 +88,24 @@ class DatabaseAccessor():
         return self._job_update(config_queue_page, "new", "process")
 
 
+    def queue_page_take_profile(self):
+        return self._job_update(config_queue_page, "profile", "parse")
+
+
+    def queue_page_take_follow(self):
+        return self._job_update(config_queue_page, "follow", "parse")
+
+
     def queue_page_done(self, url, flag):
         return None != self._job_update(config_queue_page, "process", flag, url)
+
+
+    def queue_page_done_profile(self, url):
+        return None != self._job_update(config_queue_page, "parse", "done_profile", url)
+
+
+    def queue_page_done_follow(self, url):
+        return None != self._job_update(config_queue_page, "parse", "done_follow", url)
 
 
     def queue_page_fail(self, url):

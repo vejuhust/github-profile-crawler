@@ -171,6 +171,8 @@ db.queue_crawl.validate()
 
 #### update
 ```javascript
+db.queue_page.update({},  { $set: { "status": "new" } }, { "multi": true })
+db.queue_page.update({"status": "parse"},  { $set: { "status": "profile" } }, { "multi": true })
 db.queue_page.update({ "status": "process" },  { $set: { "status": "new" } }, { "multi": true })
 db.queue_crawl.update({ "url": "https://github.com/wong2" },  { $set: { "status": "new" } })
 db.queue_crawl.findAndModify({ query: { "status" : "new" }, sort: {"date": 1 },  update: {$set: { "status" : "process" }}})
