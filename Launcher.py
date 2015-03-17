@@ -41,7 +41,7 @@ urls = [
 
 class Launcher(BaseLogger):
     def __init__(self):
-        BaseLogger.__init__(self)
+        BaseLogger.__init__(self, self.__class__.__name__)
 
 
     def process(self, urls):
