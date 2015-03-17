@@ -7,7 +7,6 @@ from Crawler import Crawler
 from DatabaseAccessor import DatabaseAccessor
 from config import *
 from contextlib import closing
-from contextlib import closing
 from time import sleep
 
 
