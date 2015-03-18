@@ -1,15 +1,15 @@
 #!/usr/bin/env python3
 """Web crawler for github profile crawler"""
 
-from requests import get, codes
-from contextlib import closing
-from time import sleep
-from config import config_crawl_retry, config_crawl_timeout, config_crawl_sleep
+from BaseLogger import BaseLogger
 from DatabaseAccessor import DatabaseAccessor
+from config import config_crawl_retry, config_crawl_timeout
+from requests import get, codes
 
 
-class Crawler():
+class Crawler(BaseLogger):
     def __init__(self):
+        BaseLogger.__init__(self, self.__class__.__name__)
         self._db_conn = DatabaseAccessor()
 
 
@@ -45,6 +45,7 @@ class Crawler():
 
     def close(self):
         self._db_conn.close()
+        self._close_logger()
 
 
 def main():
