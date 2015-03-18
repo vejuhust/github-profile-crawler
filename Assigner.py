@@ -4,7 +4,9 @@
 from BaseLogger import BaseLogger
 from DatabaseAccessor import DatabaseAccessor
 from bs4 import BeautifulSoup
+from config import config_parse_process
 from contextlib import closing
+from multiprocessing import Process
 from platform import node
 
 
@@ -51,9 +53,12 @@ class Assigner(BaseLogger):
         self._close_logger()
 
 
-def main():
-    pass
+def main(times=10):
+    with closing(Assigner()) as assigner:
+        for _ in range(times):
+            assigner.process()
 
 
 if __name__ == '__main__':
-    main()
+    for _ in range(config_parse_process):
+        Process(target=main, args=(20,)).start()
