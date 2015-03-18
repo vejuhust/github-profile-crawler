@@ -4,10 +4,11 @@
 from BaseLogger import BaseLogger
 from DatabaseAccessor import DatabaseAccessor
 from bs4 import BeautifulSoup
-from config import config_queue_page, config_parse_domain, config_parse_process
+from config import config_queue_page, config_idle_sleep, config_parse_domain, config_parse_process
 from contextlib import closing
 from multiprocessing import Process
 from platform import node
+from time import sleep
 
 
 class ParserProfile(BaseLogger):
@@ -38,6 +39,7 @@ class ParserProfile(BaseLogger):
                 status_like = True
         else:
             self._log_warning("grab no profile pages to parse")
+            sleep(config_idle_sleep)
         return status_profile, status_like
 
 
@@ -108,10 +110,14 @@ class ParserProfile(BaseLogger):
 
 def main(times=10):
     with closing(ParserProfile()) as parser:
-        for _ in range(times):
-            parser.process()
+        if times:
+            for _ in range(times):
+                parser.process()
+        else:
+            while True:
+                parser.process()
 
 
 if __name__ == '__main__':
     for _ in range(config_parse_process):
-        Process(target=main, args=(20,)).start()
+        Process(target=main, args=(0,)).start()
