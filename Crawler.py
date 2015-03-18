@@ -9,7 +9,7 @@ from platform import node
 
 
 class Crawler(BaseLogger):
-    def __init__(self, log_level):
+    def __init__(self, log_level=None):
         BaseLogger.__init__(self, self.__class__.__name__, log_level)
         self._db_conn = DatabaseAccessor()
         self._log_info("crawler start @%s", node())
