@@ -53,8 +53,8 @@ curl -i https://api.github.com/users/wong2
 * location
 * email
 * blog
-* created_at
-* followers
+* join_at
+* follower
 * following
 * starred
 
@@ -348,10 +348,12 @@ apt-get install --assume-yes --force-yes gcc g++ build-essential python-dev pyth
 # on node 1
 pip3 install pymongo
 pip3 install requests
+pip3 install beautifulsoup4
 
 # on node 2
 pip-3.2 install pymongo
 pip-3.2 install requests
+pip-3.2 install beautifulsoup4
 ```
 
 #### source code
