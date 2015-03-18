@@ -50,9 +50,9 @@ class Launcher():
         self.clear_queue_crawl_page_profile()
         self.add_urls_to_queue_crawl(urls)
         self.run_crawler(len(urls) + 3)
-        # self.run_assigner(len(urls))
-        # self.run_parser_profile(len(urls))
-        # self.run_parser_follow(len(urls))
+        self.run_assigner(len(urls) + 3)
+        self.run_parser_profile(len(urls) + 3)
+        self.run_parser_follow(len(urls) + 3)
 
 
     def add_urls_to_queue_crawl(self, urls):
@@ -69,7 +69,7 @@ class Launcher():
 
 
     def run_crawler(self, times=5):
-        with closing(Crawler(logging.DEBUG)) as crawler:
+        with closing(Crawler()) as crawler:
             for _ in range(times):
                 crawler.process()
                 sleep(config_crawl_sleep)
@@ -78,19 +78,19 @@ class Launcher():
     def run_assigner(self, times=5):
         with closing(Assigner()) as assigner:
             for _ in range(times):
-                print("assign - {}".format(assigner.process()))
+                assigner.process()
 
 
     def run_parser_profile(self, times=5):
         with closing(ParserProfile()) as parser:
             for _ in range(times):
-                print("parse profile - {}".format(parser.process()))
+                parser.process()
 
 
     def run_parser_follow(self, times=5):
         with closing(ParserFollow()) as parser:
             for _ in range(times):
-                print("parse follow - {}".format(parser.process()))
+                parser.process()
 
 
     def close(self):

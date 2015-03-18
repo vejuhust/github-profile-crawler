@@ -6,13 +6,14 @@ from DatabaseAccessor import DatabaseAccessor
 from bs4 import BeautifulSoup
 from config import config_queue_page, config_parse_domain
 from contextlib import closing
-from pprint import pprint
+from platform import node
 
 
 class ParserProfile(BaseLogger):
-    def __init__(self):
-        BaseLogger.__init__(self, self.__class__.__name__)
+    def __init__(self, log_level=None):
+        BaseLogger.__init__(self, self.__class__.__name__, log_level)
         self._db_conn = DatabaseAccessor()
+        self._log_info("profile parser start @%s", node())
 
 
     def process(self):
@@ -22,14 +23,20 @@ class ParserProfile(BaseLogger):
             url = job['url']
             text = job.get('text', "")
             profile, like = self._parse_profile_and_like(url, text)
+            self._log_info("parse profile page: %s, items count: { profile: %d, like: %d }", url, len(profile), len(like))
             if profile:
-                self._db_conn.profile_create(profile)
-                self._db_conn.queue_page_done_profile(url)
+                if not self._db_conn.profile_create(profile):
+                    self._log_warning("fail to add profile of %s in database", url)
+                if not self._db_conn.queue_page_done_profile(url):
+                    self._log_warning("fail to mark %s as 'done_profile' in queue_page", url)
                 status_profile = True
             if like:
                 for key in like:
-                    self._db_conn.queue_crawl_create(like[key])
+                    if not self._db_conn.queue_crawl_create(like[key]):
+                        self._log_warning("fail to add %s as 'new' job in queue_crawl", like[key])
                 status_like = True
+        else:
+            self._log_warning("grab no profile pages to parse")
         return status_profile, status_like
 
 
@@ -93,6 +100,7 @@ class ParserProfile(BaseLogger):
 
 
     def close(self):
+        self._db_conn.close()
         self._close_logger()
 
 
