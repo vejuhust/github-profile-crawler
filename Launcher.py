@@ -47,7 +47,7 @@ class Launcher():
 
 
     def process(self, urls):
-        self.clear_queue_crawl_page_profile()
+        # self.clear_queue_crawl_page_profile()
         self.add_urls_to_queue_crawl(urls)
         self.run_crawler(len(urls) + 3)
         self.run_assigner(len(urls) + 3)

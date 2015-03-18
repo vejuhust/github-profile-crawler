@@ -80,4 +80,4 @@ def main(times=10):
 
 if __name__ == '__main__':
     for _ in range(config_crawl_process):
-        Process(target=main, args=(5,)).start()
+        Process(target=main, args=(0,)).start()
