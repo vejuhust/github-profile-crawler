@@ -18,7 +18,17 @@ class Reporter(BaseLogger):
 
 
     def process(self):
-        pass
+        print("crawl all: %d" % self._db_conn.queue_crawl_count())
+        print("crawl new: %d" % self._db_conn.queue_crawl_count("new"))
+        print("crawl fail: %d" % self._db_conn.queue_crawl_count("fail"))
+
+        print("page all: %d" % self._db_conn.queue_page_count())
+        print("page new: %d" % self._db_conn.queue_page_count("new"))
+        print("page profile: %d" % self._db_conn.queue_page_count("profile"))
+        print("page follow: %d" % self._db_conn.queue_page_count("follow"))
+        print("page unknown: %d" % self._db_conn.queue_page_count("unknown"))
+
+        print("profile: %d" % self._db_conn.profile_count())
 
 
     def close(self):
