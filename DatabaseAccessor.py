@@ -66,10 +66,10 @@ class DatabaseAccessor():
         return self._job_delete(config_db_profile)
 
 
-    def profile_count(self, required_field=None):
+    def profile_count(self, *fields):
         filter = {}
-        if required_field != None:
-            filter[required_field] = { '$exists': True }
+        for field in fields:
+            filter[field] = { '$exists': True }
         return self._job_count(config_db_profile, filter)
 
 
