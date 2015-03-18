@@ -4,10 +4,11 @@
 from BaseLogger import BaseLogger
 from DatabaseAccessor import DatabaseAccessor
 from bs4 import BeautifulSoup
-from config import config_parse_process
+from config import config_report_interval
 from contextlib import closing
-from multiprocessing import Process
+from json import dumps
 from platform import node
+from time import sleep
 
 
 class Reporter(BaseLogger):
@@ -18,21 +19,22 @@ class Reporter(BaseLogger):
 
 
     def process(self):
-        print("crawl all: %d" % self._db_conn.queue_crawl_count())
-        print("crawl new: %d" % self._db_conn.queue_crawl_count("new"))
-        print("crawl fail: %d" % self._db_conn.queue_crawl_count("fail"))
-
-        print("page all: %d" % self._db_conn.queue_page_count())
-        print("page new: %d" % self._db_conn.queue_page_count("new"))
-        print("page profile: %d" % self._db_conn.queue_page_count("profile"))
-        print("page follow: %d" % self._db_conn.queue_page_count("follow"))
-        print("page unknown: %d" % self._db_conn.queue_page_count("unknown"))
-
-        print("profile: %d" % self._db_conn.profile_count())
-        print("profile w/ loc: %d" % self._db_conn.profile_count("location"))
-        print("profile w/ name: %d" % self._db_conn.profile_count("name"))
-        print("profile w/ email: %d" % self._db_conn.profile_count("email"))
-        print("profile w/ name & email: %d" % self._db_conn.profile_count("name", "email"))
+        status = {
+            "crawl all": self._db_conn.queue_crawl_count(),
+            "crawl new": self._db_conn.queue_crawl_count("new"),
+            "crawl fail": self._db_conn.queue_crawl_count("fail"),
+            "page all": self._db_conn.queue_page_count(),
+            "page new": self._db_conn.queue_page_count("new"),
+            "page profile": self._db_conn.queue_page_count("profile"),
+            "page follow": self._db_conn.queue_page_count("follow"),
+            "page unknown": self._db_conn.queue_page_count("unknown"),
+            "profile": self._db_conn.profile_count(),
+            "profile w/ loc": self._db_conn.profile_count("location"),
+            "profile w/ name": self._db_conn.profile_count("name"),
+            "profile w/ email": self._db_conn.profile_count("email"),
+            "profile w/ name & email": self._db_conn.profile_count("name", "email"),
+        }
+        self._log_info(dumps(status, sort_keys=True, indent=4))
 
 
     def close(self):
@@ -43,7 +45,9 @@ class Reporter(BaseLogger):
 
 def main():
     with closing(Reporter()) as reporter:
-        reporter.process()
+        while True:
+            reporter.process()
+            sleep(config_report_interval)
 
 
 if __name__ == '__main__':

@@ -23,3 +23,5 @@ config_crawl_timeout    = 5
 
 config_parse_domain     = "https://github.com"
 config_parse_process    = 4
+
+config_report_interval  = 5
