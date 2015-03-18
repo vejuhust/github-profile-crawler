@@ -1,14 +1,18 @@
 #!/usr/bin/env python3
 """Assign parsing page jobs in queue_page for github profile crawler"""
 
-from contextlib import closing
-from bs4 import BeautifulSoup
+from BaseLogger import BaseLogger
 from DatabaseAccessor import DatabaseAccessor
+from bs4 import BeautifulSoup
+from contextlib import closing
+from platform import node
 
 
-class Assigner():
-    def __init__(self):
+class Assigner(BaseLogger):
+    def __init__(self, log_level=None):
+        BaseLogger.__init__(self, self.__class__.__name__, log_level)
         self._db_conn = DatabaseAccessor()
+        self._log_info("assigner start @%s", node())
 
 
     def process(self):
@@ -19,7 +23,11 @@ class Assigner():
             url = job['url']
             text = job.get('text', "")
             flag = self._classify(url, text)
-            self._db_conn.queue_page_done(url, flag)
+            self._log_info("%s is classified as '%s'", url, flag)
+            if not self._db_conn.queue_page_done(url, flag):
+                self._log_warning("fail to mark %s as '%s' in queue_page", url, flag)
+        else:
+            self._log_warning("grab no jobs to assign")
         return url, flag
 
 
@@ -39,6 +47,7 @@ class Assigner():
 
     def close(self):
         self._db_conn.close()
+        self._close_logger()
 
 
 def main():
