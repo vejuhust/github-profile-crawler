@@ -49,9 +49,9 @@ class Launcher():
         self.clear_queue_crawl_page_profile()
         self.add_urls_to_queue_crawl(urls)
         self.run_crawler(len(urls))
-        self.run_assigner(len(urls))
-        self.run_parser_profile(len(urls))
-        self.run_parser_follow(len(urls))
+        # self.run_assigner(len(urls))
+        # self.run_parser_profile(len(urls))
+        # self.run_parser_follow(len(urls))
 
 
     def add_urls_to_queue_crawl(self, urls):

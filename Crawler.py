@@ -18,6 +18,7 @@ class Crawler(BaseLogger):
         job = self._db_conn.queue_crawl_take()
         if job != None:
             url = job['url']
+            self._log_info("start to crawl %s", url)
             retry_times = config_crawl_retry
             while retry_times > 0:
                 text = self._crawl_page(url)
