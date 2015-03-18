@@ -4,8 +4,9 @@
 from BaseLogger import BaseLogger
 from DatabaseAccessor import DatabaseAccessor
 from bs4 import BeautifulSoup
-from config import config_queue_page, config_parse_domain
+from config import config_queue_page, config_parse_domain, config_parse_process
 from contextlib import closing
+from multiprocessing import Process
 from platform import node
 
 
@@ -105,9 +106,12 @@ class ParserProfile(BaseLogger):
         self._close_logger()
 
 
-def main():
-    pass
+def main(times=10):
+    with closing(ParserProfile()) as parser:
+        for _ in range(times):
+            parser.process()
 
 
 if __name__ == '__main__':
-    main()
+    for _ in range(config_parse_process):
+        Process(target=main, args=(20,)).start()
