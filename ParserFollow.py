@@ -6,13 +6,14 @@ from DatabaseAccessor import DatabaseAccessor
 from bs4 import BeautifulSoup
 from config import config_queue_page, config_parse_domain
 from contextlib import closing
-from pprint import pprint
+from platform import node
 
 
 class ParserFollow(BaseLogger):
-    def __init__(self):
-        BaseLogger.__init__(self, self.__class__.__name__)
+    def __init__(self, log_level=None):
+        BaseLogger.__init__(self, self.__class__.__name__, log_level)
         self._db_conn = DatabaseAccessor()
+        self._log_info("follow parser start @%s", node())
 
 
     def process(self):
@@ -22,11 +23,16 @@ class ParserFollow(BaseLogger):
             url = job['url']
             text = job.get('text', "")
             links = self._parse_user_links(url, text)
+            self._log_info("parse follow page: %s, link count: %d", url, len(links))
             if links:
                 for link in links:
-                    self._db_conn.queue_crawl_create(link)
-                self._db_conn.queue_page_done_follow(url)
+                    if not self._db_conn.queue_crawl_create(link):
+                        self._log_warning("fail to add %s as 'new' job in queue_crawl", link)
+                if not self._db_conn.queue_page_done_follow(url):
+                    self._log_warning("fail to mark %s as 'done_follow' in queue_page", url)
                 status = True
+        else:
+            self._log_warning("grab no follow pages to parse")
         return status
 
 
@@ -59,6 +65,7 @@ class ParserFollow(BaseLogger):
 
 
     def close(self):
+        self._db_conn.close()
         self._close_logger()
 
 
