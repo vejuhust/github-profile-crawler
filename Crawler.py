@@ -1,16 +1,18 @@
 #!/usr/bin/env python3
 """Web crawler for github profile crawler"""
 
-from requests import get, codes
-from contextlib import closing
-from time import sleep
-from config import config_crawl_retry, config_crawl_timeout, config_crawl_sleep
+from BaseLogger import BaseLogger
 from DatabaseAccessor import DatabaseAccessor
+from config import config_crawl_retry, config_crawl_timeout
+from requests import get, codes
+from platform import node
 
 
-class Crawler():
-    def __init__(self):
+class Crawler(BaseLogger):
+    def __init__(self, log_level):
+        BaseLogger.__init__(self, self.__class__.__name__, log_level)
         self._db_conn = DatabaseAccessor()
+        self._log_info("crawler start @%s", node())
 
 
     def process(self):
@@ -18,6 +20,7 @@ class Crawler():
         job = self._db_conn.queue_crawl_take()
         if job != None:
             url = job['url']
+            self._log_info("start to crawl %s", url)
             retry_times = config_crawl_retry
             while retry_times > 0:
                 text = self._crawl_page(url)
@@ -26,11 +29,18 @@ class Crawler():
                 else:
                     retry_times = 0
             if text == None:
-                self._db_conn.queue_crawl_fail(url)
+                self._log_warning("fail to crawl %s after %d attempts", url, config_crawl_retry)
+                if not self._db_conn.queue_crawl_fail(url):
+                    self._log_warning("fail to mark %s as 'fail' in queue_crawl", url)
             else:
-                self._db_conn.queue_page_create(url, text)
-                self._db_conn.queue_crawl_done(url)
+                self._log_info("finish crawling %s, response length: %d", url, len(text))
+                if not self._db_conn.queue_page_create(url, text):
+                    self._log_warning("fail to add %s as 'new' job in queue_page", url)
+                if not self._db_conn.queue_crawl_done(url):
+                    self._log_warning("fail to mark %s as 'done' in queue_crawl", url)
                 status = True
+        else:
+            self._log_warning("grab no jobs to crawl")
         return status
 
 
@@ -45,6 +55,7 @@ class Crawler():
 
     def close(self):
         self._db_conn.close()
+        self._close_logger()
 
 
 def main():

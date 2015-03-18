@@ -9,6 +9,7 @@ from DatabaseAccessor import DatabaseAccessor
 from config import *
 from contextlib import closing
 from time import sleep
+import logging
 
 
 urls = [
@@ -48,10 +49,10 @@ class Launcher():
     def process(self, urls):
         self.clear_queue_crawl_page_profile()
         self.add_urls_to_queue_crawl(urls)
-        self.run_crawler(len(urls))
-        self.run_assigner(len(urls))
-        self.run_parser_profile(len(urls))
-        self.run_parser_follow(len(urls))
+        self.run_crawler(len(urls) + 3)
+        # self.run_assigner(len(urls))
+        # self.run_parser_profile(len(urls))
+        # self.run_parser_follow(len(urls))
 
 
     def add_urls_to_queue_crawl(self, urls):
@@ -68,9 +69,9 @@ class Launcher():
 
 
     def run_crawler(self, times=5):
-        with closing(Crawler()) as crawler:
+        with closing(Crawler(logging.DEBUG)) as crawler:
             for _ in range(times):
-                print("crawl - {}".format(crawler.process()))
+                crawler.process()
                 sleep(config_crawl_sleep)
 
 

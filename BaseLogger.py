@@ -8,7 +8,7 @@ from config import config_log_file
 
 class BaseLogger():
     def __init__(self, caller_name="%(module)s", level=INFO):
-        log_formatter = Formatter("%(asctime)s [{}][%(process)d][%(levelname)s] %(message)s".format(caller_name))
+        log_formatter = Formatter("[%(asctime)s][{}][%(process)d][%(levelname)s] %(message)s".format(caller_name))
         self._root_logger = getLogger()
         self._root_logger.setLevel(level)
         self._root_logger.addHandler(self._file_handler(log_formatter))
