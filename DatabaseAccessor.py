@@ -2,7 +2,7 @@
 """Database Accessor for github profile crawler"""
 
 from config import *
-from pymongo import MongoClient
+from pymongo import MongoClient, ASCENDING
 from contextlib import closing
 from datetime import datetime
 
@@ -23,6 +23,8 @@ class DatabaseAccessor():
         for collection in collections:
             if collection not in names:
                 self._db.create_collection(collection)
+                self._db[collection].create_index([('date', ASCENDING)], background=True)
+                self._db[collection].create_index([('url', ASCENDING)], background=True)
 
 
     def _job_create(self, queue_name, content):
@@ -45,7 +47,7 @@ class DatabaseAccessor():
         return self._db[queue_name].find_and_modify(
             query=query,
             update={ '$set': { 'status': status_new } },
-            sort={ 'date': 1 })
+            sort={ 'date': ASCENDING })
 
 
     def _job_delete(self, queue_name, filter={}):
