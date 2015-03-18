@@ -40,7 +40,7 @@ class Crawler(BaseLogger):
                     self._log_warning("fail to mark %s as 'done' in queue_crawl", url)
                 status = True
         else:
-            self._log_info("grab no jobs to crawl")
+            self._log_warning("grab no jobs to crawl")
         return status
 
 
