@@ -7,6 +7,7 @@ from config import config_crawl_retry, config_crawl_sleep, config_crawl_process,
 from contextlib import closing
 from multiprocessing import Process
 from platform import node
+from random import randint
 from requests import get, codes
 from time import sleep
 
@@ -66,7 +67,7 @@ def main(times=10):
     with closing(Crawler()) as crawler:
         for _ in range(times):
             crawler.process()
-            sleep(config_crawl_sleep)
+            sleep(randint(1, config_crawl_sleep))
 
 
 if __name__ == '__main__':
