@@ -70,7 +70,7 @@ class Launcher():
     def run_crawler(self, times=5):
         with closing(Crawler()) as crawler:
             for _ in range(times):
-                print("crawl - {}".format(crawler.process()))
+                crawler.process()
                 sleep(config_crawl_sleep)
 
 
