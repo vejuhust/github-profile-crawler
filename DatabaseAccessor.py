@@ -54,12 +54,20 @@ class DatabaseAccessor():
         return self._db[queue_name].remove(filter).get('ok', 0) == 1
 
 
+    def _job_count(self, queue_name, filter={}):
+        return self._db[queue_name].find(filter).count()
+
+
     def profile_create(self, profile):
         return self._job_create(config_db_profile, profile)
 
 
     def profile_clear(self):
         return self._job_delete(config_db_profile)
+
+
+    def profile_count(self):
+        return self._job_count(config_db_profile)
 
 
     def queue_crawl_create(self, url):
@@ -84,6 +92,13 @@ class DatabaseAccessor():
 
     def queue_crawl_clear(self):
         return self._job_delete(config_queue_crawl)
+
+
+    def queue_crawl_count(self, status=None):
+        filter = {}
+        if status != None:
+            filter['status'] = status
+        return self._job_count(config_queue_crawl, filter)
 
 
     def queue_page_create(self, url, text):
@@ -124,6 +139,13 @@ class DatabaseAccessor():
 
     def queue_page_clear(self):
         return self._job_delete(config_queue_page)
+
+
+    def queue_page_count(self, status=None):
+        filter = {}
+        if status != None:
+            filter['status'] = status
+        return self._job_count(config_queue_page, filter)
 
 
     def close(self):
