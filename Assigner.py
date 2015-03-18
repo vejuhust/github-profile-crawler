@@ -47,6 +47,7 @@ class Assigner(BaseLogger):
 
     def close(self):
         self._db_conn.close()
+        self._log_info("assigner exit")
         self._close_logger()
 
 

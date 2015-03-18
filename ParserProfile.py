@@ -101,6 +101,7 @@ class ParserProfile(BaseLogger):
 
     def close(self):
         self._db_conn.close()
+        self._log_info("profile parser exit")
         self._close_logger()
 
 

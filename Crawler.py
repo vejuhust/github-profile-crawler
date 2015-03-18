@@ -55,6 +55,7 @@ class Crawler(BaseLogger):
 
     def close(self):
         self._db_conn.close()
+        self._log_info("crawler exit")
         self._close_logger()
 
 
