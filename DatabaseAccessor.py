@@ -46,8 +46,7 @@ class DatabaseAccessor():
             query['status'] = status_old
         return self._db[queue_name].find_and_modify(
             query=query,
-            update={ '$set': { 'status': status_new } },
-            sort={ 'date': ASCENDING })
+            update={ '$set': { 'status': status_new } })
 
 
     def _job_delete(self, queue_name, filter={}):
