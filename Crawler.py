@@ -3,9 +3,12 @@
 
 from BaseLogger import BaseLogger
 from DatabaseAccessor import DatabaseAccessor
-from config import config_crawl_retry, config_crawl_timeout
-from requests import get, codes
+from config import config_crawl_retry, config_crawl_sleep, config_crawl_process, config_crawl_timeout
+from contextlib import closing
+from multiprocessing import Process
 from platform import node
+from requests import get, codes
+from time import sleep
 
 
 class Crawler(BaseLogger):
@@ -59,9 +62,13 @@ class Crawler(BaseLogger):
         self._close_logger()
 
 
-def main():
-    pass
+def main(times=10):
+    with closing(Crawler()) as crawler:
+        for _ in range(times):
+            crawler.process()
+            sleep(config_crawl_sleep)
 
 
 if __name__ == '__main__':
-    main()
+    for _ in range(config_crawl_process):
+        Process(target=main, args=(20,)).start()
