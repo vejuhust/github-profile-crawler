@@ -4,10 +4,11 @@
 from BaseLogger import BaseLogger
 from DatabaseAccessor import DatabaseAccessor
 from bs4 import BeautifulSoup
-from config import config_parse_process
+from config import config_parse_process, config_idle_sleep
 from contextlib import closing
 from multiprocessing import Process
 from platform import node
+from time import sleep
 
 
 class Assigner(BaseLogger):
@@ -30,6 +31,7 @@ class Assigner(BaseLogger):
                 self._log_warning("fail to mark %s as '%s' in queue_page", url, flag)
         else:
             self._log_warning("grab no jobs to assign")
+            sleep(config_idle_sleep)
         return url, flag
 
 
@@ -55,10 +57,14 @@ class Assigner(BaseLogger):
 
 def main(times=10):
     with closing(Assigner()) as assigner:
-        for _ in range(times):
-            assigner.process()
+        if times:
+            for _ in range(times):
+                assigner.process()
+        else:
+            while True:
+                assigner.process()
 
 
 if __name__ == '__main__':
     for _ in range(config_parse_process):
-        Process(target=main, args=(20,)).start()
+        Process(target=main, args=(0,)).start()

@@ -21,6 +21,8 @@ config_crawl_retry      = 3
 config_crawl_sleep      = 5
 config_crawl_timeout    = 5
 
+config_idle_sleep       = 1
+
 config_parse_domain     = "https://github.com"
 config_parse_process    = 4
 
