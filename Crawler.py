@@ -9,8 +9,8 @@ from platform import node
 
 
 class Crawler(BaseLogger):
-    def __init__(self):
-        BaseLogger.__init__(self, self.__class__.__name__)
+    def __init__(self, log_level):
+        BaseLogger.__init__(self, self.__class__.__name__, log_level)
         self._db_conn = DatabaseAccessor()
         self._log_info("crawler start @%s", node())
 
@@ -29,13 +29,18 @@ class Crawler(BaseLogger):
                 else:
                     retry_times = 0
             if text == None:
-                self._db_conn.queue_crawl_fail(url)
                 self._log_warning("fail to crawl %s after %d attempts", url, config_crawl_retry)
+                if not self._db_conn.queue_crawl_fail(url):
+                    self._log_warning("fail to mark %s as 'fail' in queue_crawl", url)
             else:
-                self._db_conn.queue_page_create(url, text)
-                self._db_conn.queue_crawl_done(url)
                 self._log_info("finish crawling %s, response length: %d", url, len(text))
+                if not self._db_conn.queue_page_create(url, text):
+                    self._log_warning("fail to add %s as 'new' job in queue_page", url)
+                if not self._db_conn.queue_crawl_done(url):
+                    self._log_warning("fail to mark %s as 'done' in queue_crawl", url)
                 status = True
+        else:
+            self._log_info("grab no jobs to crawl")
         return status
 
 
