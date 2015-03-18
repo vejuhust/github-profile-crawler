@@ -7,9 +7,11 @@ from config import config_log_file
 
 
 class BaseLogger():
-    def __init__(self, caller_name="%(module)s", level=INFO):
-        log_formatter = Formatter("[%(asctime)s][{}][%(process)d][%(levelname)s] %(message)s".format(caller_name))
-        self._root_logger = getLogger()
+    def __init__(self, caller_name="%(module)s", level=None):
+        if level == None:
+            level = INFO
+        log_formatter = Formatter("[%(asctime)s.%(msecs)-3.3d][{}][%(process)d][%(levelname)s] %(message)s".format(caller_name), datefmt="%Y-%m-%d,%H:%M:%S")
+        self._root_logger = getLogger(caller_name)
         self._root_logger.setLevel(level)
         self._root_logger.addHandler(self._file_handler(log_formatter))
         self._root_logger.addHandler(self._console_handler(log_formatter))
