@@ -2,7 +2,7 @@
 """Database Accessor for github profile crawler"""
 
 from config import *
-from pymongo import MongoClient
+from pymongo import MongoClient, ASCENDING
 from contextlib import closing
 from datetime import datetime
 
@@ -23,6 +23,8 @@ class DatabaseAccessor():
         for collection in collections:
             if collection not in names:
                 self._db.create_collection(collection)
+                self._db[collection].create_index([('date', ASCENDING)], background=True)
+                self._db[collection].create_index([('url', ASCENDING)], background=True)
 
 
     def _job_create(self, queue_name, content):
@@ -45,11 +47,15 @@ class DatabaseAccessor():
         return self._db[queue_name].find_and_modify(
             query=query,
             update={ '$set': { 'status': status_new } },
-            sort={ 'date': 1 })
+            sort={ 'date': ASCENDING })
 
 
     def _job_delete(self, queue_name, filter={}):
         return self._db[queue_name].remove(filter).get('ok', 0) == 1
+
+
+    def _job_count(self, queue_name, filter={}):
+        return self._db[queue_name].find(filter).count()
 
 
     def profile_create(self, profile):
@@ -58,6 +64,13 @@ class DatabaseAccessor():
 
     def profile_clear(self):
         return self._job_delete(config_db_profile)
+
+
+    def profile_count(self, *fields):
+        filter = {}
+        for field in fields:
+            filter[field] = { '$exists': True }
+        return self._job_count(config_db_profile, filter)
 
 
     def queue_crawl_create(self, url):
@@ -82,6 +95,13 @@ class DatabaseAccessor():
 
     def queue_crawl_clear(self):
         return self._job_delete(config_queue_crawl)
+
+
+    def queue_crawl_count(self, status=None):
+        filter = {}
+        if status != None:
+            filter['status'] = status
+        return self._job_count(config_queue_crawl, filter)
 
 
     def queue_page_create(self, url, text):
@@ -122,6 +142,13 @@ class DatabaseAccessor():
 
     def queue_page_clear(self):
         return self._job_delete(config_queue_page)
+
+
+    def queue_page_count(self, status=None):
+        filter = {}
+        if status != None:
+            filter['status'] = status
+        return self._job_count(config_queue_page, filter)
 
 
     def close(self):
