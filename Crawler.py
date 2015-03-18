@@ -63,13 +63,21 @@ class Crawler(BaseLogger):
         self._close_logger()
 
 
+def crawl(crawler):
+    crawler.process()
+    sleep(randint(1, config_crawl_sleep))
+
+
 def main(times=10):
     with closing(Crawler()) as crawler:
-        for _ in range(times):
-            crawler.process()
-            sleep(randint(1, config_crawl_sleep))
+        if times:
+            for _ in range(times):
+                crawl(crawler)
+        else:
+            while True:
+                crawl(crawler)
 
 
 if __name__ == '__main__':
     for _ in range(config_crawl_process):
-        Process(target=main, args=(20,)).start()
+        Process(target=main, args=(5,)).start()
