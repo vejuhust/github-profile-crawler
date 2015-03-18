@@ -66,6 +66,7 @@ class ParserFollow(BaseLogger):
 
     def close(self):
         self._db_conn.close()
+        self._log_info("follow parser exit")
         self._close_logger()
 
 
