@@ -19,7 +19,7 @@ config_log_file     =  "dev_{}.log".format(strftime("%Y-%m-%d"))
 config_crawl_process    = 4
 config_crawl_retry      = 3
 config_crawl_sleep      = 5
-config_crawl_timeout    = 10
+config_crawl_timeout    = 5
 
 config_parse_domain     = "https://github.com"
 config_parse_process    = 4
