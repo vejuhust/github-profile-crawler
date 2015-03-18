@@ -29,6 +29,8 @@ class Reporter(BaseLogger):
         print("page unknown: %d" % self._db_conn.queue_page_count("unknown"))
 
         print("profile: %d" % self._db_conn.profile_count())
+        print("profile w/ name: %d" % self._db_conn.profile_count("name"))
+        print("profile w/ email: %d" % self._db_conn.profile_count("email"))
 
 
     def close(self):

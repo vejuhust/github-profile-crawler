@@ -66,8 +66,11 @@ class DatabaseAccessor():
         return self._job_delete(config_db_profile)
 
 
-    def profile_count(self):
-        return self._job_count(config_db_profile)
+    def profile_count(self, required_field=None):
+        filter = {}
+        if required_field != None:
+            filter[required_field] = { '$exists': True }
+        return self._job_count(config_db_profile, filter)
 
 
     def queue_crawl_create(self, url):
