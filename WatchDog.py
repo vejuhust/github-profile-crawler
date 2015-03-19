@@ -77,13 +77,14 @@ class WatchDog(BaseLogger):
     def _draw_charts_with_data(self, data):
         draw_methods = [ self._draw_chart_summary, self._draw_chart_crawl, self._draw_chart_page, self._draw_chart_profile ]
         for method in draw_methods:
-            result = method(data[-config_report_item:])
+            step = 3
+            result = method(data[-config_report_item*step::step])
             self._log_info("save chart as %s", result)
 
 
     def _get_chart_with_style(self):
         dark_rotate_style = RotateStyle('#9e6ffe')
-        return StackedLine(fill=True, disable_xml_declaration=True, include_x_axis=True, human_readable=True, interpolate='cubic', style=dark_rotate_style)
+        return StackedLine(fill=True, disable_xml_declaration=True, include_x_axis=False, human_readable=True, interpolate='cubic', style=dark_rotate_style)
 
 
     def _extract_list(self, data, field):
@@ -118,7 +119,7 @@ class WatchDog(BaseLogger):
         chart = self._get_chart_with_style()
         chart.title = 'Queue Crawl Status'
         chart.x_labels = self._extract_date_list(data)
-        chart.add('Failed', list_fail)
+        # chart.add('Failed', list_fail)
         chart.add('Done', list_done)
         chart.add('Todo', list_new)
         chart.render_to_file(filename)
@@ -136,7 +137,7 @@ class WatchDog(BaseLogger):
         chart = self._get_chart_with_style()
         chart.title = 'Queue Page Status'
         chart.x_labels = self._extract_date_list(data)
-        chart.add('Other', list_unknown)
+        # chart.add('Other', list_unknown)
         chart.add('Done', list_done)
         chart.add('Profile', list_profile)
         chart.add('Follow', list_follow)
