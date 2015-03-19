@@ -2,6 +2,7 @@
 """Configurations for github profile crawler"""
 
 from time import strftime
+from multiprocessing import cpu_count
 
 
 config_db_addr  = "127.0.0.1"
@@ -24,7 +25,7 @@ config_crawl_timeout    = 5
 config_idle_sleep       = 1
 
 config_parse_domain     = "https://github.com"
-config_parse_process    = 4
+config_parse_process    = max(4, cpu_count())
 
 config_report_folder    = "charts"
 config_report_interval  = 60
