@@ -3,7 +3,6 @@
 
 from BaseLogger import BaseLogger
 from DatabaseAccessor import DatabaseAccessor
-from bs4 import BeautifulSoup
 from config import config_report_interval, config_report_item, config_report_status, config_report_folder
 from contextlib import closing
 from json import loads, dumps
@@ -55,7 +54,7 @@ class Reporter(BaseLogger):
 
 
     def _load_data(self, filename=config_report_status):
-        data = {}
+        data = []
         if isfile(filename):
             try:
                 data_file = open(filename, 'r')
