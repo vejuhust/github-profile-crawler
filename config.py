@@ -27,3 +27,6 @@ config_parse_domain     = "https://github.com"
 config_parse_process    = 4
 
 config_report_interval  = 60
+config_report_item      = 15
+config_report_status    = "status.json"
+config_report_folder    = "charts"
