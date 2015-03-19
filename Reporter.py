@@ -21,6 +21,7 @@ class Reporter(BaseLogger):
         self._db_conn = DatabaseAccessor()
         if not isdir(config_report_folder):
             makedirs(config_report_folder)
+            self._log_info("create folder of charts: %s", config_report_folder)
         self._log_info("reporter start @%s", node())
 
 
@@ -75,10 +76,10 @@ class Reporter(BaseLogger):
 
 
     def _draw_charts_with_data(self, data):
-        self._draw_chart_summary(data[-config_report_item:])
-        self._draw_chart_crawl(data[-config_report_item:])
-        self._draw_chart_page(data[-config_report_item:])
-        self._draw_chart_profile(data[-config_report_item:])
+        draw_methods = [ self._draw_chart_summary, self._draw_chart_crawl, self._draw_chart_page, self._draw_chart_profile ]
+        for method in draw_methods:
+            result = method(data[-config_report_item:])
+            self._log_info("save chart as %s", result)
 
 
     def _get_chart_with_style(self):
