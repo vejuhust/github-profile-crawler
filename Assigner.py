@@ -40,12 +40,12 @@ class Assigner(BaseLogger):
         flag = "unknown"
         if soup.find_all(class_="vcard-names"):
             flag ="profile"
-        elif soup.find_all(class_="org-name"):
-            flag = "org"
         elif soup.find_all(class_="follow-list"):
             flag = "follow"
         elif soup.find_all(class_="blankslate"):
             flag = "alone"
+        elif soup.find_all(class_="org-name"):
+            flag = "org"
         return flag
 
 
