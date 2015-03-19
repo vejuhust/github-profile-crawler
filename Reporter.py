@@ -95,13 +95,13 @@ class Reporter(BaseLogger):
         list_crawl = self._extract_list(data, "crawl_all")
         list_page = self._extract_list(data, "page_all")
         list_profile = self._extract_list(data, "profile")
-        line_chart = self._get_chart_with_style()
-        line_chart.title = 'Status Summary'
-        line_chart.x_labels = self._extract_date_list(data)
-        line_chart.add('Profile', list_profile)
-        line_chart.add('Page', list_page)
-        line_chart.add('Crawl', list_crawl)
-        line_chart.render_to_file(filename)
+        chart = self._get_chart_with_style()
+        chart.title = 'Status Summary'
+        chart.x_labels = self._extract_date_list(data)
+        chart.add('Profile', list_profile)
+        chart.add('Page', list_page)
+        chart.add('Crawl', list_crawl)
+        chart.render_to_file(filename)
         return filename
 
 
@@ -110,13 +110,13 @@ class Reporter(BaseLogger):
         list_new = self._extract_list(data, "crawl_new")
         list_fail = self._extract_list(data, "crawl_fail")
         list_done = [ list_all[i] - list_new[i] - list_fail[i] for i in range(len(list_all))]
-        line_chart = self._get_chart_with_style()
-        line_chart.title = 'Queue Crawl Status'
-        line_chart.x_labels = self._extract_date_list(data)
-        line_chart.add('Failed', list_fail)
-        line_chart.add('Done', list_done)
-        line_chart.add('Todo', list_new)
-        line_chart.render_to_file(filename)
+        chart = self._get_chart_with_style()
+        chart.title = 'Queue Crawl Status'
+        chart.x_labels = self._extract_date_list(data)
+        chart.add('Failed', list_fail)
+        chart.add('Done', list_done)
+        chart.add('Todo', list_new)
+        chart.render_to_file(filename)
         return filename
 
 
@@ -127,15 +127,15 @@ class Reporter(BaseLogger):
         list_follow = self._extract_list(data, "page_follow")
         list_unknown = self._extract_list(data, "page_unknown")
         list_done = [ list_all[i] - list_new[i] - list_profile[i] - list_follow[i] - list_unknown[i] for i in range(len(list_all))]
-        line_chart = self._get_chart_with_style()
-        line_chart.title = 'Queue Page Status'
-        line_chart.x_labels = self._extract_date_list(data)
-        line_chart.add('Other', list_unknown)
-        line_chart.add('Done', list_done)
-        line_chart.add('Profile', list_profile)
-        line_chart.add('Follow', list_follow)
-        line_chart.add('Todo', list_new)
-        line_chart.render_to_file(filename)
+        chart = self._get_chart_with_style()
+        chart.title = 'Queue Page Status'
+        chart.x_labels = self._extract_date_list(data)
+        chart.add('Other', list_unknown)
+        chart.add('Done', list_done)
+        chart.add('Profile', list_profile)
+        chart.add('Follow', list_follow)
+        chart.add('Todo', list_new)
+        chart.render_to_file(filename)
         return filename
 
 
@@ -143,12 +143,12 @@ class Reporter(BaseLogger):
         list_all = self._extract_list(data, "profile")
         list_email = self._extract_list(data, "profile_email")
         list_other = [ list_all[i] - list_email[i] for i in range(len(list_all))]
-        line_chart = self._get_chart_with_style()
-        line_chart.title = 'Profile Status'
-        line_chart.x_labels = self._extract_date_list(data)
-        line_chart.add('Other', list_other)
-        line_chart.add('Email', list_email)
-        line_chart.render_to_file(filename)
+        chart = self._get_chart_with_style()
+        chart.title = 'Profile Status'
+        chart.x_labels = self._extract_date_list(data)
+        chart.add('Other', list_other)
+        chart.add('Email', list_email)
+        chart.render_to_file(filename)
         return filename
 
 
