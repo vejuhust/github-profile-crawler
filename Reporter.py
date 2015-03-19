@@ -29,10 +29,7 @@ class Reporter(BaseLogger):
             "page follow": self._db_conn.queue_page_count("follow"),
             "page unknown": self._db_conn.queue_page_count("unknown"),
             "profile": self._db_conn.profile_count(),
-            "profile w/ loc": self._db_conn.profile_count("location"),
-            "profile w/ name": self._db_conn.profile_count("name"),
             "profile w/ email": self._db_conn.profile_count("email"),
-            "profile w/ name & email": self._db_conn.profile_count("name", "email"),
         }
         self._log_info(dumps(status, sort_keys=True, indent=4))
 
