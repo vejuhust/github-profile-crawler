@@ -36,8 +36,8 @@
 * assigner
 * parser_profile
 * parser_follow
-* reporter
 * watchdog
+* reporter
 
 ### queues
 * queue_crawl
