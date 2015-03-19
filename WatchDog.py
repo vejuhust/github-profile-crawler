@@ -3,7 +3,7 @@
 
 from BaseLogger import BaseLogger
 from DatabaseAccessor import DatabaseAccessor
-from config import config_report_interval, config_report_item, config_report_status, config_report_folder
+from config import config_report_interval, config_report_item, config_report_status, config_report_folder, config_report_step
 from contextlib import closing
 from json import loads, dumps
 from os import makedirs
@@ -77,8 +77,7 @@ class WatchDog(BaseLogger):
     def _draw_charts_with_data(self, data):
         draw_methods = [ self._draw_chart_summary, self._draw_chart_crawl, self._draw_chart_page, self._draw_chart_profile ]
         for method in draw_methods:
-            step = 3
-            result = method(data[-config_report_item*step::step])
+            result = method(data[-config_report_item*config_report_step::config_report_step])
             self._log_info("save chart as %s", result)
 
 
