@@ -4,10 +4,11 @@
 from BaseLogger import BaseLogger
 from DatabaseAccessor import DatabaseAccessor
 from bs4 import BeautifulSoup
-from config import config_report_interval, config_report_item, config_report_status
+from config import config_report_interval, config_report_item, config_report_status, config_report_folder
 from contextlib import closing
 from json import loads, dumps
-from os.path import isfile
+from os import makedirs
+from os.path import isfile, isdir, join
 from platform import node
 from pygal import StackedLine
 from pygal.style import RotateStyle
@@ -18,6 +19,8 @@ class Reporter(BaseLogger):
     def __init__(self, log_level=None):
         BaseLogger.__init__(self, self.__class__.__name__, log_level)
         self._db_conn = DatabaseAccessor()
+        if not isdir(config_report_folder):
+            makedirs(config_report_folder)
         self._log_info("reporter start @%s", node())
 
 
@@ -91,7 +94,8 @@ class Reporter(BaseLogger):
         return [ item["date"].split()[-1][:5] for item in data ]
 
 
-    def _draw_chart_summary(self, data, filename='static/chart_summary.svg'):
+    def _draw_chart_summary(self, data, filename="chart_summary.svg"):
+        filename = join(config_report_folder, filename)
         list_crawl = self._extract_list(data, "crawl_all")
         list_page = self._extract_list(data, "page_all")
         list_profile = self._extract_list(data, "profile")
@@ -105,7 +109,8 @@ class Reporter(BaseLogger):
         return filename
 
 
-    def _draw_chart_crawl(self, data, filename='static/chart_crawl.svg'):
+    def _draw_chart_crawl(self, data, filename="chart_crawl.svg"):
+        filename = join(config_report_folder, filename)
         list_all = self._extract_list(data, "crawl_all")
         list_new = self._extract_list(data, "crawl_new")
         list_fail = self._extract_list(data, "crawl_fail")
@@ -120,7 +125,8 @@ class Reporter(BaseLogger):
         return filename
 
 
-    def _draw_chart_page(self, data, filename='static/chart_page.svg'):
+    def _draw_chart_page(self, data, filename="chart_page.svg"):
+        filename = join(config_report_folder, filename)
         list_all = self._extract_list(data, "page_all")
         list_new = self._extract_list(data, "page_new")
         list_profile = self._extract_list(data, "page_profile")
@@ -139,7 +145,8 @@ class Reporter(BaseLogger):
         return filename
 
 
-    def _draw_chart_profile(self, data, filename='static/chart_profile.svg'):
+    def _draw_chart_profile(self, data, filename="chart_profile.svg"):
+        filename = join(config_report_folder, filename)
         list_all = self._extract_list(data, "profile")
         list_email = self._extract_list(data, "profile_email")
         list_other = [ list_all[i] - list_email[i] for i in range(len(list_all))]
