@@ -26,4 +26,4 @@ config_idle_sleep       = 1
 config_parse_domain     = "https://github.com"
 config_parse_process    = 4
 
-config_report_interval  = 5
+config_report_interval  = 60
