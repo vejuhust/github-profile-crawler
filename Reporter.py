@@ -22,12 +22,12 @@ class Reporter(BaseLogger):
 
 
     def process(self):
-        data = self.update_data()
-        self._draw_crafts_with_data(data)
+        data = self._update_data()
+        self._draw_charts_with_data(data)
         return
 
 
-    def update_data(self):
+    def _update_data(self):
         data = self._load_data()
         self._log_info("load existing data, count: %d", len(data))
         status = {
@@ -71,7 +71,7 @@ class Reporter(BaseLogger):
         output_file.close()
 
 
-    def _draw_crafts_with_data(self, data):
+    def _draw_charts_with_data(self, data):
         self._draw_chart_summary(data[-config_report_item:])
         self._draw_chart_crawl(data[-config_report_item:])
         self._draw_chart_page(data[-config_report_item:])
