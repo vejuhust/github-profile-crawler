@@ -44,7 +44,7 @@ coverage.xml
 *.mo
 *.pot
 
-# Django stuff:
+# Django stuff
 *.log
 
 # Sphinx documentation
@@ -56,5 +56,6 @@ target/
 # Sublime Text
 *.sublime-*
 
-# Projects
+# Outputs
 status.json
+chart_*.svg

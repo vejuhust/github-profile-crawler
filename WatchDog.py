@@ -14,14 +14,14 @@ from pygal.style import RotateStyle
 from time import sleep, strftime
 
 
-class Reporter(BaseLogger):
+class WatchDog(BaseLogger):
     def __init__(self, log_level=None):
         BaseLogger.__init__(self, self.__class__.__name__, log_level)
         self._db_conn = DatabaseAccessor()
         if not isdir(config_report_folder):
             makedirs(config_report_folder)
             self._log_info("create folder of charts: %s", config_report_folder)
-        self._log_info("reporter start @%s", node())
+        self._log_info("watchdog start @%s", node())
 
 
     def process(self):
@@ -161,14 +161,14 @@ class Reporter(BaseLogger):
 
     def close(self):
         self._db_conn.close()
-        self._log_info("reporter exit")
+        self._log_info("watchdog exit")
         self._close_logger()
 
 
 def main():
-    with closing(Reporter()) as reporter:
+    with closing(WatchDog()) as watchdog:
         while True:
-            reporter.process()
+            watchdog.process()
             sleep(config_report_interval)
 
 
