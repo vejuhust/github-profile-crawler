@@ -36,6 +36,7 @@
 * assigner
 * parser_profile
 * parser_follow
+* watchdog
 * reporter
 
 ### queues
@@ -222,6 +223,8 @@ mongo --port 27017 -u YOUR_USERNAME -p YOUR_PASSWORD --authenticationDatabase gi
 sudo pip3 install pymongo
 sudo pip3 install requests
 sudo pip3 install beautifulsoup4
+sudo pip3 install pygal
+sudo pip3 install flask
 ```
 
 
@@ -229,6 +232,7 @@ sudo pip3 install beautifulsoup4
 * pymongo: http://api.mongodb.org/python/current/index.html
 * logging: https://docs.python.org/3/library/logging.html
 * beautifulsoup: http://www.crummy.com/software/BeautifulSoup/bs4/doc/
+* pygal: http://pygal.org/documentation/
 
 
 ### page samples
@@ -389,6 +393,8 @@ C:\Python34\python.exe  C:\Python34\Tools\Scripts\win_add2path.py
 C:\Python34\Scripts\pip3.4.exe install pymongo
 C:\Python34\Scripts\pip3.4.exe install requests
 C:\Python34\Scripts\pip3.4.exe install beautifulsoup4
+C:\Python34\Scripts\pip3.4.exe install pygal
+C:\Python34\Scripts\pip3.4.exe install flask
 ```
 
 up and run
