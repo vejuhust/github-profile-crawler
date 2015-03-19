@@ -77,7 +77,7 @@ class WatchDog(BaseLogger):
     def _draw_charts_with_data(self, data):
         draw_methods = [ self._draw_chart_summary, self._draw_chart_crawl, self._draw_chart_page, self._draw_chart_profile ]
         for method in draw_methods:
-            result = method(data[-config_report_item*config_report_step::config_report_step])
+            result = method(data[ -config_report_item * config_report_step + config_report_step - 1 : : config_report_step ])
             self._log_info("save chart as %s", result)
 
 
