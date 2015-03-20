@@ -105,7 +105,7 @@ class WatchDog(BaseLogger):
         list_page = self._extract_list(data, "page_all")
         list_profile = self._extract_list(data, "profile")
         chart = self._get_line_with_style()
-        chart.title = 'Length Summary'
+        chart.title = 'Queue Size Summary'
         chart.x_labels = self._extract_date_list(data)
         chart.add('Profile', list_profile)
         chart.add('Page', list_page)
@@ -121,7 +121,7 @@ class WatchDog(BaseLogger):
         list_fail = self._extract_list(data, "crawl_fail")
         list_done = [ list_all[i] - list_new[i] - list_fail[i] for i in range(len(list_all))]
         chart = self._get_stackedline_with_style()
-        chart.title = 'Length of Queue Crawl'
+        chart.title = 'Size of Queue Crawl'
         chart.x_labels = self._extract_date_list(data)
         chart.add('Done', list_done)
         chart.add('Todo', list_new)
@@ -138,7 +138,7 @@ class WatchDog(BaseLogger):
         list_unknown = self._extract_list(data, "page_unknown")
         list_done = [ list_all[i] - list_new[i] - list_profile[i] - list_follow[i] - list_unknown[i] for i in range(len(list_all))]
         chart = self._get_stackedline_with_style()
-        chart.title = 'Length of Queue Page'
+        chart.title = 'Size of Queue Page'
         chart.x_labels = self._extract_date_list(data)
         chart.add('Done', list_done)
         chart.add('Profile', list_profile)
@@ -154,7 +154,7 @@ class WatchDog(BaseLogger):
         list_email = self._extract_list(data, "profile_email")
         list_other = [ list_all[i] - list_email[i] for i in range(len(list_all))]
         chart = self._get_stackedline_with_style()
-        chart.title = 'Length of Queue Profile'
+        chart.title = 'Size of Queue Profile'
         chart.x_labels = self._extract_date_list(data)
         chart.add('Other', list_other)
         chart.add('Email', list_email)
