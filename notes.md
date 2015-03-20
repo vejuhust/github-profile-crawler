@@ -155,11 +155,6 @@ db.queue_crawl.update(
     { "url": "https://github.com/xudifsd" }, 
     { $setOnInsert: { "url": "https://github.com/xudifsd", "status": "new", "date": new Date() } }, 
     { "upsert": true })
-
-db.queue_crawl.createIndex( { "date": 1 } )
-db.queue_crawl.createIndex( { "url": 1, "status": 1 } )
-db.queue_page.createIndex( { "status": 1 } )
-db.profile.createIndex( { "url": 1 } )
 ```
 
 #### read
@@ -173,10 +168,6 @@ db.queue_crawl.find({}, { "url": 1, "status": 1, "_id": 0 }).sort( { "date": 1 }
 db.queue_crawl.find({ "status": "new" }).pretty()
 db.queue_crawl.find({ "url": "https://github.com/wong2" }).pretty()
 db.queue_crawl.validate()
-
-db.queue_crawl.getIndexes()
-db.queue_page.getIndexes()
-db.profile.getIndexes()
 ```
 
 #### update
@@ -196,6 +187,18 @@ db.queue_crawl.remove({})
 db.queue_crawl.drop()
 
 db.dropDatabase()
+```
+
+#### index
+```javascript
+db.queue_crawl.createIndex( { "date": 1 } )
+db.queue_crawl.createIndex( { "url": 1, "status": 1 } )
+db.queue_page.createIndex( { "status": 1 } )
+db.profile.createIndex( { "url": 1 } )
+
+db.queue_crawl.getIndexes()
+db.queue_page.getIndexes()
+db.profile.getIndexes()
 ```
 
 #### create user
