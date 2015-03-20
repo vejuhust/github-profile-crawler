@@ -28,8 +28,8 @@ config_parse_domain     = "https://github.com"
 config_parse_process    = max(4, cpu_count())
 
 config_report_folder    = "charts"
-config_report_interval  = 60
-config_report_item      = 15
+config_report_interval  = 300
+config_report_item      = 16
 config_report_port      = 8090
 config_report_status    = "status.json"
-config_report_step      = 3
+config_report_step      = 2
