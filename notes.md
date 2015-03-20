@@ -157,7 +157,8 @@ db.queue_crawl.update(
     { "upsert": true })
 
 db.queue_crawl.createIndex( { "date": 1 } )
-db.queue_page.createIndex( { "date": 1 } )
+db.queue_crawl.createIndex( { "url": 1, "status": 1 } )
+db.queue_page.createIndex( { "status": 1 } )
 db.profile.createIndex( { "url": 1 } )
 ```
 
@@ -212,6 +213,17 @@ db.createUser(
 try to login with auth:
 ```bash
 mongo --port 27017 -u YOUR_USERNAME -p YOUR_PASSWORD --authenticationDatabase gitcrawl
+```
+
+
+#### profiler
+```javascript
+db.setProfilingLevel(1, 100)
+db.setProfilingLevel(2)
+db.setProfilingLevel(0)
+
+db.system.profile.find( { millis: { $gt: 5 } } )
+db.system.profile.find().sort( { millis: -1 } )
 ```
 
 
