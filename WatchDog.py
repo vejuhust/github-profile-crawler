@@ -105,7 +105,7 @@ class WatchDog(BaseLogger):
         list_page = self._extract_list(data, "page_all")
         list_profile = self._extract_list(data, "profile")
         chart = self._get_line_with_style()
-        chart.title = 'Status Summary'
+        chart.title = 'Length Summary'
         chart.x_labels = self._extract_date_list(data)
         chart.add('Profile', list_profile)
         chart.add('Page', list_page)
@@ -121,9 +121,8 @@ class WatchDog(BaseLogger):
         list_fail = self._extract_list(data, "crawl_fail")
         list_done = [ list_all[i] - list_new[i] - list_fail[i] for i in range(len(list_all))]
         chart = self._get_stackedline_with_style()
-        chart.title = 'Queue Crawl Status'
+        chart.title = 'Length of Queue Crawl'
         chart.x_labels = self._extract_date_list(data)
-        # chart.add('Failed', list_fail)
         chart.add('Done', list_done)
         chart.add('Todo', list_new)
         chart.render_to_file(filename)
@@ -139,9 +138,8 @@ class WatchDog(BaseLogger):
         list_unknown = self._extract_list(data, "page_unknown")
         list_done = [ list_all[i] - list_new[i] - list_profile[i] - list_follow[i] - list_unknown[i] for i in range(len(list_all))]
         chart = self._get_stackedline_with_style()
-        chart.title = 'Queue Page Status'
+        chart.title = 'Length of Queue Page'
         chart.x_labels = self._extract_date_list(data)
-        # chart.add('Other', list_unknown)
         chart.add('Done', list_done)
         chart.add('Profile', list_profile)
         chart.add('Follow', list_follow)
@@ -156,7 +154,7 @@ class WatchDog(BaseLogger):
         list_email = self._extract_list(data, "profile_email")
         list_other = [ list_all[i] - list_email[i] for i in range(len(list_all))]
         chart = self._get_stackedline_with_style()
-        chart.title = 'Profile Status'
+        chart.title = 'Length of Queue Profile'
         chart.x_labels = self._extract_date_list(data)
         chart.add('Other', list_other)
         chart.add('Email', list_email)
