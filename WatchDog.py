@@ -3,8 +3,10 @@
 
 from BaseLogger import BaseLogger
 from DatabaseAccessor import DatabaseAccessor
+from bson import json_util
 from config import config_report_interval, config_report_item, config_report_status, config_report_folder, config_report_step
 from contextlib import closing
+from datetime import datetime, timezone
 from json import loads, dumps
 from os import makedirs
 from os.path import isfile, isdir, join
@@ -44,12 +46,12 @@ class WatchDog(BaseLogger):
             "page_unknown": self._db_conn.queue_page_count("unknown"),
             "profile": self._db_conn.profile_count(),
             "profile_email": self._db_conn.profile_count("email"),
-            "date": strftime("%Y-%m-%d %H:%M:%S"),
+            "date": datetime.utcnow(),
         }
         data.append(status)
         self._save_data(data)
         self._log_info("save existing data, count: %d", len(data))
-        self._log_info(dumps(status, sort_keys=True, indent=4))
+        self._log_info(dumps(status, sort_keys=True, indent=4, default=json_util.default))
         return data
 
 
@@ -60,7 +62,7 @@ class WatchDog(BaseLogger):
                 data_file = open(filename, 'r')
                 content = data_file.read()
                 data_file.close()
-                data = loads(content)
+                data = loads(content, object_hook=json_util.object_hook)
             except Exception as e:
                 self._log_exception("fail to load json file: %s", filename)
         else:
@@ -70,7 +72,7 @@ class WatchDog(BaseLogger):
 
     def _save_data(self, data, filename=config_report_status):
         output_file = open(filename, 'w')
-        output_file.write(dumps(data, sort_keys = True, indent = 4))
+        output_file.write(dumps(data, sort_keys=True, indent=4, default=json_util.default))
         output_file.close()
 
 
@@ -100,8 +102,8 @@ class WatchDog(BaseLogger):
         return [ item[field] for item in data ]
 
 
-    def _extract_date_list(self, data):
-        return [ item["date"].split()[-1][:5] for item in data ]
+    def _extract_date_list(self, data_list):
+        return [ data["date"].replace(tzinfo=timezone.utc).astimezone(tz=None).strftime("%H:%M") for data in data_list ]
 
 
     def _draw_chart_summary(self, data, filename="chart_summary.svg"):
