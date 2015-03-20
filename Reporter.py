@@ -14,6 +14,11 @@ def serve_static_files(path):
     return send_from_directory(config_report_folder, path)
 
 
+@app.route('/static/favicon.ico')
+def favicon():
+    return send_from_directory("", "favicon.ico", mimetype='image/vnd.microsoft.icon')
+
+
 @app.route('/')
 def status():
     filelist = [
