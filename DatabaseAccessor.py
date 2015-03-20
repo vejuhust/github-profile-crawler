@@ -26,6 +26,7 @@ class DatabaseAccessor():
                 self._db[collection].create_index([('date', ASCENDING)], background=True)
                 self._db[collection].create_index([('url', ASCENDING)], background=True)
                 self._db[collection].create_index([('status', ASCENDING)], background=True)
+                self._db[collection].create_index([('url', ASCENDING), ('status', ASCENDING)], background=True)
 
 
     def _job_create(self, queue_name, content):

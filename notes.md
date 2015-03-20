@@ -157,6 +157,7 @@ db.queue_crawl.update(
     { "upsert": true })
 
 db.queue_crawl.createIndex( { "date": 1 } )
+db.queue_crawl.createIndex( { "url": 1, "status": 1 } )
 db.queue_page.createIndex( { "status": 1 } )
 db.profile.createIndex( { "url": 1 } )
 ```
