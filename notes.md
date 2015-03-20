@@ -201,6 +201,16 @@ db.queue_page.getIndexes()
 db.profile.getIndexes()
 ```
 
+#### profiler
+```javascript
+db.setProfilingLevel(1, 100)
+db.setProfilingLevel(2)
+db.setProfilingLevel(0)
+
+db.system.profile.find( { millis: { $gt: 5 } } )
+db.system.profile.find().sort( { millis: -1 } )
+```
+
 #### create user
 ```javascript
 use gitcrawl
@@ -217,19 +227,6 @@ try to login with auth:
 ```bash
 mongo --port 27017 -u YOUR_USERNAME -p YOUR_PASSWORD --authenticationDatabase gitcrawl
 ```
-
-
-#### profiler
-```javascript
-db.setProfilingLevel(1, 100)
-db.setProfilingLevel(2)
-db.setProfilingLevel(0)
-
-db.system.profile.find( { millis: { $gt: 5 } } )
-db.system.profile.find().sort( { millis: -1 } )
-```
-
-
 
 ## implement
 
