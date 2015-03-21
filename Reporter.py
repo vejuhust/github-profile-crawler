@@ -27,7 +27,7 @@ def status():
         "static/size_profile.svg",
         "static/size_page.svg",
     ]
-    return render_template("status.html", charts=filelist)
+    return render_template("size.html", charts=filelist)
 
 
 if __name__ == '__main__':
