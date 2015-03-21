@@ -39,10 +39,13 @@ class WatchDog(BaseLogger):
             "crawl_all": self._db_conn.queue_crawl_count(),
             "crawl_new": self._db_conn.queue_crawl_count("new"),
             "crawl_fail": self._db_conn.queue_crawl_count("fail"),
+            "crawl_done": self._db_conn.queue_crawl_count("done"),
             "page_all": self._db_conn.queue_page_count(),
             "page_new": self._db_conn.queue_page_count("new"),
             "page_profile": self._db_conn.queue_page_count("profile"),
+            "page_profile_done": self._db_conn.queue_page_count("done_profile"),
             "page_follow": self._db_conn.queue_page_count("follow"),
+            "page_follow_done": self._db_conn.queue_page_count("done_follow"),
             "page_unknown": self._db_conn.queue_page_count("unknown"),
             "profile": self._db_conn.profile_count(),
             "profile_email": self._db_conn.profile_count("email"),
@@ -78,7 +81,7 @@ class WatchDog(BaseLogger):
 
     def _draw_charts_with_data(self, data):
         chart_size_methods = [ self._draw_size_chart_summary, self._draw_size_chart_crawl, self._draw_size_chart_page, self._draw_size_chart_profile ]
-        chart_delta_methods = [ self._draw_delta_chart_summary ]
+        chart_delta_methods = [ self._draw_delta_chart_summary, self._draw_delta_chart_page ]
         pos_start = config_report_item * config_report_step - config_report_step + 1
         if len(data) > pos_start:
             data_render = data[-pos_start::config_report_step]
@@ -94,12 +97,12 @@ class WatchDog(BaseLogger):
 
     def _get_stackedline_with_style(self):
         dark_rotate_style = RotateStyle('#9e6ffe')
-        return StackedLine(fill=True, disable_xml_declaration=True, include_x_axis=False, human_readable=True, interpolate='cubic', style=dark_rotate_style)
+        return StackedLine(fill=True, disable_xml_declaration=True, include_x_axis=False, human_readable=True, interpolate='hermite', style=dark_rotate_style)
 
 
     def _get_line_with_style(self):
         dark_rotate_style = RotateStyle('#9e6ffe')
-        return Line(fill=False, disable_xml_declaration=True, include_x_axis=False, human_readable=True, interpolate='cubic', style=dark_rotate_style)
+        return Line(fill=False, disable_xml_declaration=True, include_x_axis=False, human_readable=True, interpolate='hermite', style=dark_rotate_style)
 
 
     def _extract_list(self, data, field):
@@ -186,11 +189,26 @@ class WatchDog(BaseLogger):
         list_page = self._get_delta_list(data, "page_all")
         list_profile = self._get_delta_list(data, "profile")
         chart = self._get_line_with_style()
-        chart.title = 'Queue Size Increase'
+        chart.title = 'Queue Size Increase Summary'
         chart.x_labels = self._extract_date_list(data[1:])
         chart.add('Profile', list_profile)
         chart.add('Page', list_page)
         chart.add('Crawl', list_crawl)
+        chart.render_to_file(filename)
+        return filename
+
+
+    def _draw_delta_chart_page(self, data, filename="delta_page.svg"):
+        filename = join(config_report_folder, filename)
+        list_all = self._get_delta_list(data, "page_all")
+        list_follow = self._get_delta_list(data, "page_follow_done")
+        list_profile = self._get_delta_list(data, "page_profile_done")
+        chart = self._get_line_with_style()
+        chart.title = 'Queue Page Size Increase'
+        chart.x_labels = self._extract_date_list(data[1:])
+        chart.add('Profile', list_profile)
+        chart.add('Follow', list_follow)
+        chart.add('All', list_all)
         chart.render_to_file(filename)
         return filename
 
