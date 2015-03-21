@@ -97,12 +97,12 @@ class WatchDog(BaseLogger):
 
     def _get_stackedline_with_style(self):
         dark_rotate_style = RotateStyle('#9e6ffe')
-        return StackedLine(fill=True, disable_xml_declaration=True, include_x_axis=False, human_readable=True, interpolate='cubic', style=dark_rotate_style)
+        return StackedLine(fill=True, disable_xml_declaration=True, include_x_axis=False, human_readable=True, interpolate='hermite', style=dark_rotate_style)
 
 
     def _get_line_with_style(self):
         dark_rotate_style = RotateStyle('#9e6ffe')
-        return Line(fill=False, disable_xml_declaration=True, include_x_axis=False, human_readable=True, interpolate='cubic', style=dark_rotate_style)
+        return Line(fill=False, disable_xml_declaration=True, include_x_axis=False, human_readable=True, interpolate='hermite', style=dark_rotate_style)
 
 
     def _extract_list(self, data, field):
