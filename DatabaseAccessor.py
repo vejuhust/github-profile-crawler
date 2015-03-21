@@ -94,6 +94,10 @@ class DatabaseAccessor():
         return None != self._job_update(config_queue_crawl, None, "new", url)
 
 
+    def queue_crawl_retry(self):
+        return None != self._job_update(config_queue_crawl, "fail", "new")
+
+
     def queue_crawl_clear(self):
         return self._job_delete(config_queue_crawl)
 
