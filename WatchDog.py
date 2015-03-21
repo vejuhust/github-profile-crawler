@@ -77,7 +77,7 @@ class WatchDog(BaseLogger):
 
 
     def _draw_charts_with_data(self, data):
-        draw_methods = [ self._draw_chart_summary, self._draw_chart_crawl, self._draw_chart_page, self._draw_chart_profile ]
+        draw_methods = [ self._draw_size_chart_summary, self._draw_size_chart_crawl, self._draw_size_chart_page, self._draw_size_chart_profile ]
         pos_start = config_report_item * config_report_step - config_report_step + 1
         if len(data) > pos_start:
             data_render = data[-pos_start::config_report_step]
@@ -106,7 +106,7 @@ class WatchDog(BaseLogger):
         return [ data["date"].replace(tzinfo=timezone.utc).astimezone(tz=None).strftime("%H:%M") for data in data_list ]
 
 
-    def _draw_chart_summary(self, data, filename="chart_summary.svg"):
+    def _draw_size_chart_summary(self, data, filename="size_summary.svg"):
         filename = join(config_report_folder, filename)
         list_crawl = self._extract_list(data, "crawl_all")
         list_page = self._extract_list(data, "page_all")
@@ -121,7 +121,7 @@ class WatchDog(BaseLogger):
         return filename
 
 
-    def _draw_chart_crawl(self, data, filename="chart_crawl.svg"):
+    def _draw_size_chart_crawl(self, data, filename="size_crawl.svg"):
         filename = join(config_report_folder, filename)
         list_all = self._extract_list(data, "crawl_all")
         list_new = self._extract_list(data, "crawl_new")
@@ -136,7 +136,7 @@ class WatchDog(BaseLogger):
         return filename
 
 
-    def _draw_chart_page(self, data, filename="chart_page.svg"):
+    def _draw_size_chart_page(self, data, filename="size_page.svg"):
         filename = join(config_report_folder, filename)
         list_all = self._extract_list(data, "page_all")
         list_new = self._extract_list(data, "page_new")
@@ -155,7 +155,7 @@ class WatchDog(BaseLogger):
         return filename
 
 
-    def _draw_chart_profile(self, data, filename="chart_profile.svg"):
+    def _draw_size_chart_profile(self, data, filename="size_profile.svg"):
         filename = join(config_report_folder, filename)
         list_all = self._extract_list(data, "profile")
         list_email = self._extract_list(data, "profile_email")
