@@ -77,14 +77,18 @@ class WatchDog(BaseLogger):
 
 
     def _draw_charts_with_data(self, data):
-        draw_methods = [ self._draw_size_chart_summary, self._draw_size_chart_crawl, self._draw_size_chart_page, self._draw_size_chart_profile ]
+        chart_size_methods = [ self._draw_size_chart_summary, self._draw_size_chart_crawl, self._draw_size_chart_page, self._draw_size_chart_profile ]
+        chart_delta_methods = [ self._draw_delta_chart_summary ]
         pos_start = config_report_item * config_report_step - config_report_step + 1
         if len(data) > pos_start:
             data_render = data[-pos_start::config_report_step]
         else:
             data_render = data[-config_report_item:]
-        for method in draw_methods:
+        for method in chart_size_methods:
             result = method(data_render)
+            self._log_info("save chart as %s", result)
+        for method in chart_delta_methods:
+            result = method(data[-config_report_item-1:])
             self._log_info("save chart as %s", result)
 
 
@@ -165,6 +169,28 @@ class WatchDog(BaseLogger):
         chart.x_labels = self._extract_date_list(data)
         chart.add('Other', list_other)
         chart.add('Email', list_email)
+        chart.render_to_file(filename)
+        return filename
+
+
+    def _get_delta_list(self, data, field):
+        value_list = self._extract_list(data, field)
+        for i in range(len(value_list)-1, 0, -1):
+            value_list[i] -= value_list[i-1]
+        return value_list[1:]
+
+
+    def _draw_delta_chart_summary(self, data, filename="delta_summary.svg"):
+        filename = join(config_report_folder, filename)
+        list_crawl = self._get_delta_list(data, "crawl_all")
+        list_page = self._get_delta_list(data, "page_all")
+        list_profile = self._get_delta_list(data, "profile")
+        chart = self._get_line_with_style()
+        chart.title = 'Queue Size Increase'
+        chart.x_labels = self._extract_date_list(data[1:])
+        chart.add('Profile', list_profile)
+        chart.add('Page', list_page)
+        chart.add('Crawl', list_crawl)
         chart.render_to_file(filename)
         return filename
 

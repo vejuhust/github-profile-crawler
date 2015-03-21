@@ -24,7 +24,7 @@ def status():
     filelist = [
         "static/size_summary.svg",
         "static/size_crawl.svg",
-        "static/size_profile.svg",
+        "static/delta_summary.svg",
         "static/size_page.svg",
     ]
     return render_template("dashboard.html", title="gitcrawl dashboard - size", charts=filelist)
