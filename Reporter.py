@@ -27,7 +27,7 @@ def status():
         "static/size_profile.svg",
         "static/size_page.svg",
     ]
-    return render_template("size.html", title="gitcrawl dashboard - size", charts=filelist)
+    return render_template("dashboard.html", title="gitcrawl dashboard - size", charts=filelist)
 
 
 if __name__ == '__main__':
