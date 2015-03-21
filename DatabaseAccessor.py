@@ -22,11 +22,14 @@ class DatabaseAccessor():
         collections = [config_db_profile, config_queue_crawl, config_queue_page]
         for collection in collections:
             if collection not in names:
-                self._db.create_collection(collection)
-                self._db[collection].create_index([('date', ASCENDING)], background=True)
-                self._db[collection].create_index([('url', ASCENDING)], background=True)
-                self._db[collection].create_index([('status', ASCENDING)], background=True)
-                self._db[collection].create_index([('url', ASCENDING), ('status', ASCENDING)], background=True)
+                try:
+                    self._db.create_collection(collection)
+                    self._db[collection].create_index([('date', ASCENDING)], background=True)
+                    self._db[collection].create_index([('url', ASCENDING)], background=True)
+                    self._db[collection].create_index([('status', ASCENDING)], background=True)
+                    self._db[collection].create_index([('url', ASCENDING), ('status', ASCENDING)], background=True)
+                except Exception as e:
+                    pass
 
 
     def _job_create(self, queue_name, content):
