@@ -22,10 +22,10 @@ def favicon():
 @app.route('/')
 def status():
     filelist = [
-        "static/chart_summary.svg",
-        "static/chart_crawl.svg",
-        "static/chart_profile.svg",
-        "static/chart_page.svg",
+        "static/size_summary.svg",
+        "static/size_crawl.svg",
+        "static/size_profile.svg",
+        "static/size_page.svg",
     ]
     return render_template("status.html", charts=filelist)
 
