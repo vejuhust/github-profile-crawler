@@ -201,6 +201,7 @@ class WatchDog(BaseLogger):
     def _draw_delta_chart_page(self, data, filename="delta_page.svg"):
         filename = join(config_report_folder, filename)
         list_all = self._get_delta_list(data, "page_all")
+        list_fail = self._get_delta_list(data, "crawl_fail")
         list_follow = self._get_delta_list(data, "page_follow_done")
         list_profile = self._get_delta_list(data, "page_profile_done")
         chart = self._get_line_with_style()
@@ -208,7 +209,8 @@ class WatchDog(BaseLogger):
         chart.x_labels = self._extract_date_list(data[1:])
         chart.add('Profile', list_profile)
         chart.add('Follow', list_follow)
-        chart.add('All', list_all)
+        chart.add('Failed Crawl', list_fail)
+        chart.add('New Crawl', list_all)
         chart.render_to_file(filename)
         return filename
 
