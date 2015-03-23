@@ -30,30 +30,15 @@
 <body>
   {% block content %}
   <div class="div-table">
+   {% for row in charts %}
     <div class="div-table-row">
+      {% for item in row %}
       <div class="div-table-col">
-        <embed type="image/svg+xml" src="/{{ charts.0 }}" />
+        <embed type="image/svg+xml" src="/{{ item }}" />
       </div>
-      <div class="div-table-col">
-        <embed type="image/svg+xml" src="/{{ charts.1 }}" />
-      </div>
+      {% endfor %}
     </div>
-    <div class="div-table-row">
-      <div class="div-table-col">
-        <embed type="image/svg+xml" src="/{{ charts.2 }}" />
-      </div>
-      <div class="div-table-col">
-        <embed type="image/svg+xml" src="/{{ charts.3 }}" />
-      </div>
-    </div>
-    <div class="div-table-row">
-      <div class="div-table-col">
-        <embed type="image/svg+xml" src="/{{ charts.4 }}" />
-      </div>
-      <div class="div-table-col">
-        <embed type="image/svg+xml" src="/{{ charts.5 }}" />
-      </div>
-    </div>
+    {% endfor %}
   </div>
   {% endblock %}
 </body>
