@@ -3,11 +3,22 @@
 <head>
   <title>{{ title }}</title>
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
-  <meta http-equiv="refresh" content="30">
+  <meta http-equiv="refresh" content="60">
   <link rel="shortcut icon" href="/static/favicon.ico">
   <style type="text/css">
     body {
         background-color: black;
+    }
+    .refresh-button {
+      display: table;
+      margin: 40px 0 0 40px;
+      padding: 7px 15px 8px 15px;
+      border: none;
+      font-family: monospace;
+      font-size: 13px;
+      cursor: pointer;
+      float: left;
+      position: absolute;
     }
     .div-table {
       display: table;
@@ -28,32 +39,18 @@
   </style>
 </head>
 <body>
+  <button class="refresh-button" onclick="top.location.reload();">Refresh</button>
   {% block content %}
   <div class="div-table">
+   {% for row in charts %}
     <div class="div-table-row">
+      {% for item in row %}
       <div class="div-table-col">
-        <embed type="image/svg+xml" src="/{{ charts.0 }}" />
+        <embed type="image/svg+xml" src="/{{ item }}" />
       </div>
-      <div class="div-table-col">
-        <embed type="image/svg+xml" src="/{{ charts.1 }}" />
-      </div>
+      {% endfor %}
     </div>
-    <div class="div-table-row">
-      <div class="div-table-col">
-        <embed type="image/svg+xml" src="/{{ charts.2 }}" />
-      </div>
-      <div class="div-table-col">
-        <embed type="image/svg+xml" src="/{{ charts.3 }}" />
-      </div>
-    </div>
-    <div class="div-table-row">
-      <div class="div-table-col">
-        <embed type="image/svg+xml" src="/{{ charts.4 }}" />
-      </div>
-      <div class="div-table-col">
-        <embed type="image/svg+xml" src="/{{ charts.5 }}" />
-      </div>
-    </div>
+    {% endfor %}
   </div>
   {% endblock %}
 </body>

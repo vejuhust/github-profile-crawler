@@ -22,12 +22,9 @@ def favicon():
 @app.route('/')
 def status():
     filelist = [
-        "static/delta_summary.svg",
-        "static/delta_page.svg",
-        "static/size_summary.svg",
-        "static/size_crawl.svg",
-        "static/size_profile.svg",
-        "static/size_page.svg",
+        [ "static/delta_summary.svg", "static/delta_page.svg" ],
+        [ "static/size_summary.svg", "static/size_crawl.svg" ],
+        [ "static/size_profile.svg", "static/size_page.svg" ],
     ]
     return render_template("dashboard.html", title="gitcrawl dashboard", charts=filelist)
 
