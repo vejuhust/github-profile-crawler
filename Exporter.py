@@ -5,6 +5,7 @@ from BaseLogger import BaseLogger
 from DatabaseAccessor import DatabaseAccessor
 from contextlib import closing
 from platform import node
+from json import dumps
 
 
 class Exporter(BaseLogger):
@@ -20,7 +21,10 @@ class Exporter(BaseLogger):
         self._save_as_csv(data)
 
 
-    def _save_as_json(self, data, filename="profile.js"):
+    def _save_as_json(self, data, filename="profile.json"):
+        output_file = open(filename, 'w')
+        output_file.write(dumps(data, sort_keys=True, indent=4))
+        output_file.close()
         self._log_info("saved as json file: %s", filename)
 
 
