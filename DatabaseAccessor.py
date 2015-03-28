@@ -41,6 +41,14 @@ class DatabaseAccessor():
             upsert=True)
 
 
+    def _job_count(self, queue_name, filter={}):
+        return self._db[queue_name].find(filter).count()
+
+
+    def _job_read(self, queue_name, filter={}):
+        return self._db[queue_name].find(filter)
+
+
     def _job_update(self, queue_name, status_old=None, status_new=None, url=None):
         query = {}
         if url != None:
@@ -58,16 +66,26 @@ class DatabaseAccessor():
         return self._db[queue_name].remove(filter).get('ok', 0) == 1
 
 
-    def _job_count(self, queue_name, filter={}):
-        return self._db[queue_name].find(filter).count()
-
-
     def profile_create(self, profile):
         return self._job_create(config_db_profile, profile)
 
 
     def profile_clear(self):
         return self._job_delete(config_db_profile)
+
+
+    def profile_read(self, *fields):
+        filter = {}
+        for field in fields:
+            filter[field] = { '$exists': True }
+        data_raw = self._job_read(config_db_profile, filter)
+        fields_remove = ['_id', 'date', 'status']
+        data = []
+        for item in data_raw:
+            for field in fields_remove:
+                item.pop(field, None)
+            data.append(item)
+        return data
 
 
     def profile_count(self, *fields):
