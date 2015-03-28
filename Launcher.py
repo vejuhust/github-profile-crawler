@@ -3,11 +3,12 @@
 
 from Assigner import Assigner
 from Crawler import Crawler
-from ParserProfile import ParserProfile
-from ParserFollow import ParserFollow
 from DatabaseAccessor import DatabaseAccessor
+from ParserFollow import ParserFollow
+from ParserProfile import ParserProfile
 from config import *
 from contextlib import closing
+from pprint import pprint
 from time import sleep
 import logging
 
@@ -53,6 +54,7 @@ class Launcher():
         self.run_assigner(len(urls) + 3)
         self.run_parser_profile(len(urls) + 3)
         self.run_parser_follow(len(urls) + 3)
+        self.read_all_profile()
 
 
     def add_urls_to_queue_crawl(self, urls):
@@ -91,6 +93,11 @@ class Launcher():
         with closing(ParserFollow()) as parser:
             for _ in range(times):
                 parser.process()
+
+
+    def read_all_profile(self):
+        with closing(DatabaseAccessor()) as dal:
+            pprint(dal.profile_read())
 
 
     def close(self):
