@@ -29,6 +29,7 @@ class WatchDog(BaseLogger):
     def process(self):
         data = self._update_data()
         self._draw_charts_with_data(data)
+        sleep(max(0, config_report_interval - data[-1]["duration"]))
         return
 
 
@@ -38,6 +39,7 @@ class WatchDog(BaseLogger):
 
         time_start = time()
         status = {
+            "date": datetime.utcnow(),
             "crawl_all": self._db_conn.queue_crawl_count(),
             "crawl_new": self._db_conn.queue_crawl_count("new"),
             "crawl_fail": self._db_conn.queue_crawl_count("fail"),
@@ -54,7 +56,6 @@ class WatchDog(BaseLogger):
         }
         time_end = time()
         status["duration"] = time_end - time_start
-        status["date"] = datetime.utcnow()
 
         data.append(status)
         self._save_data(data)
@@ -230,7 +231,6 @@ def main():
     with closing(WatchDog()) as watchdog:
         while True:
             watchdog.process()
-            sleep(config_report_interval)
 
 
 if __name__ == '__main__':
