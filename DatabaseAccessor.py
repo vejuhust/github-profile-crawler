@@ -82,8 +82,8 @@ class DatabaseAccessor():
         fields_remove = ['_id', 'date', 'status']
         data = []
         for item in data_raw:
-            for key in fields_remove:
-                item.pop(key, None)
+            for field in fields_remove:
+                item.pop(field, None)
             data.append(item)
         return data
 
