@@ -6,6 +6,7 @@ from DatabaseAccessor import DatabaseAccessor
 from contextlib import closing
 from platform import node
 from json import dumps
+from csv import DictWriter
 
 
 class Exporter(BaseLogger):
@@ -17,18 +18,26 @@ class Exporter(BaseLogger):
 
     def process(self):
         data = self._db_conn.profile_read()
+        self._log_info("load all profiles data from database")
         self._save_as_json(data)
         self._save_as_csv(data)
 
 
     def _save_as_json(self, data, filename="profile.json"):
-        output_file = open(filename, 'w')
-        output_file.write(dumps(data, sort_keys=True, indent=4))
-        output_file.close()
+        with open(filename, 'w') as jsonfile:
+            jsonfile.write(dumps(data, sort_keys=True, indent=4))
         self._log_info("saved as json file: %s", filename)
 
 
     def _save_as_csv(self, data, filename="profile.csv"):
+        fields = set()
+        for item in data:
+            fields = fields.union(set(item.keys()))
+        with open(filename, 'w') as csvfile:
+            writer = DictWriter(csvfile, extrasaction='ignore', dialect='excel', fieldnames=sorted(fields, reverse=True))
+            writer.writeheader()
+            for item in data:
+                writer.writerow(item)
         self._log_info("saved as csv file: %s", filename)
 
 
