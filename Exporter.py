@@ -5,8 +5,11 @@ from BaseLogger import BaseLogger
 from DatabaseAccessor import DatabaseAccessor
 from contextlib import closing
 from platform import node
+from os import remove
 from json import dumps
 from csv import DictWriter
+from time import strftime
+from zipfile import ZipFile, ZIP_DEFLATED
 
 
 class Exporter(BaseLogger):
@@ -17,16 +20,23 @@ class Exporter(BaseLogger):
 
 
     def process(self):
+        filelist = []
         data = self._db_conn.profile_read()
         self._log_info("load all profiles data from database")
-        self._save_as_json(data)
-        self._save_as_csv(data)
+        filelist.append(self._save_as_json(data))
+        filelist.append(self._save_as_csv(data))
+        data = self._db_conn.profile_read('email')
+        self._log_info("load profiles data with email from database")
+        filelist.append(self._save_as_json(data, "profile_email.json"))
+        filelist.append(self._save_as_csv(data, "profile_email.csv"))
+        self._archive_into_zipfile(filelist)
 
 
     def _save_as_json(self, data, filename="profile.json"):
         with open(filename, 'w') as jsonfile:
             jsonfile.write(dumps(data, sort_keys=True, indent=4))
-        self._log_info("saved as json file: %s", filename)
+        self._log_info("save as json file: %s", filename)
+        return filename
 
 
     def _save_as_csv(self, data, filename="profile.csv"):
@@ -38,7 +48,17 @@ class Exporter(BaseLogger):
             writer.writeheader()
             for item in data:
                 writer.writerow(item)
-        self._log_info("saved as csv file: %s", filename)
+        self._log_info("save as csv file: %s", filename)
+        return filename
+
+
+    def _archive_into_zipfile(self, filelist):
+        zipname = "profile_{}.zip".format(strftime("%Y-%m-%d_%H-%M-%S"))
+        with ZipFile(zipname, 'w', ZIP_DEFLATED) as zip:
+            for filename in filelist:
+                zip.write(filename)
+                remove(filename)
+        self._log_info("archive exported files into %s", zipname)
 
 
     def close(self):
