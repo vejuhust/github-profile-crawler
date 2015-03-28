@@ -58,4 +58,5 @@ target/
 
 # Outputs
 status.json
-chart_*.svg
+*.svg
+profile_*.zip

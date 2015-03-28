@@ -5,6 +5,7 @@ from BaseLogger import BaseLogger
 from DatabaseAccessor import DatabaseAccessor
 from contextlib import closing
 from platform import node
+from os import remove
 from json import dumps
 from csv import DictWriter
 from time import strftime
@@ -19,16 +20,16 @@ class Exporter(BaseLogger):
 
 
     def process(self):
-        filenames = []
+        filelist = []
         data = self._db_conn.profile_read()
         self._log_info("load all profiles data from database")
-        filenames.append(self._save_as_json(data))
-        filenames.append(self._save_as_csv(data))
+        filelist.append(self._save_as_json(data))
+        filelist.append(self._save_as_csv(data))
         data = self._db_conn.profile_read('email')
         self._log_info("load profiles data with email from database")
-        filenames.append(self._save_as_json(data, "profile_email.json"))
-        filenames.append(self._save_as_csv(data, "profile_email.csv"))
-        self._archive_into_zipfile(filenames)
+        filelist.append(self._save_as_json(data, "profile_email.json"))
+        filelist.append(self._save_as_csv(data, "profile_email.csv"))
+        self._archive_into_zipfile(filelist)
 
 
     def _save_as_json(self, data, filename="profile.json"):
@@ -56,6 +57,7 @@ class Exporter(BaseLogger):
         with ZipFile(zipname, 'w', ZIP_DEFLATED) as zip:
             for filename in filelist:
                 zip.write(filename)
+                remove(filename)
         self._log_info("archive exported files into %s", zipname)
 
 
