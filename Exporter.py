@@ -15,7 +15,18 @@ class Exporter(BaseLogger):
 
 
     def process(self):
-        pass
+        data = self._db_conn.profile_read()
+        self._save_as_json(data)
+        self._save_as_csv(data)
+
+
+    def _save_as_json(self, data, filename="profile.js"):
+        self._log_info("saved as json file: %s", filename)
+
+
+    def _save_as_csv(self, data, filename="profile.csv"):
+        self._log_info("saved as csv file: %s", filename)
+
 
     def close(self):
         self._db_conn.close()
@@ -25,7 +36,7 @@ class Exporter(BaseLogger):
 
 def main():
     with closing(Exporter()) as exporter:
-        pass
+        exporter.process()
 
 
 if __name__ == '__main__':
