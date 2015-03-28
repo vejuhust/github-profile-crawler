@@ -13,7 +13,7 @@ from os.path import isfile, isdir, join
 from platform import node
 from pygal import StackedLine, Line
 from pygal.style import RotateStyle
-from time import sleep, strftime
+from time import sleep, strftime, time
 
 
 class WatchDog(BaseLogger):
@@ -35,6 +35,8 @@ class WatchDog(BaseLogger):
     def _update_data(self):
         data = self._load_data()
         self._log_info("load existing data, count: %d", len(data))
+
+        time_start = time()
         status = {
             "crawl_all": self._db_conn.queue_crawl_count(),
             "crawl_new": self._db_conn.queue_crawl_count("new"),
@@ -49,8 +51,11 @@ class WatchDog(BaseLogger):
             "page_unknown": self._db_conn.queue_page_count("unknown"),
             "profile": self._db_conn.profile_count(),
             "profile_email": self._db_conn.profile_count("email"),
-            "date": datetime.utcnow(),
         }
+        time_end = time()
+        status["duration"] = time_end - time_start
+        status["date"] = datetime.utcnow()
+
         data.append(status)
         self._save_data(data)
         self._log_info("save existing data, count: %d", len(data))
