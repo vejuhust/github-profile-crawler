@@ -79,8 +79,11 @@ class DatabaseAccessor():
         for field in fields:
             filter[field] = { '$exists': True }
         data_raw = self._job_read(config_db_profile, filter)
+        fields_remove = ['_id', 'date', 'status']
         data = []
         for item in data_raw:
+            for key in fields_remove:
+                item.pop(key, None)
             data.append(item)
         return data
 
