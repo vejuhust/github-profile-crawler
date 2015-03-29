@@ -15,6 +15,7 @@ all the database related operations are wrapped in **DatabaseAccessor.py**. ther
 * **queue_page** - downloaded content and classification of the pages
 * **profile** - parsed users' profile from the pages
 
+
 ### worker
 
 there are four type of workers, and all of them can work independently on separate machines.
@@ -34,7 +35,19 @@ there are four type of workers, and all of them can work independently on separa
     - parse users' profile from the pages
     - store the users' profile in **profile**
 
+
 ### utility
+
+* watchdog
+    - monitor and record the status of the database
+    - draw charts based on recent status records
+* reporter
+    - host a web page to render database status charts
+* exporter
+    - dump all the profiles in json and csv formats
+* launcher
+    - verify if the system works with minimal targets 
+
 
 ### workflow
 
