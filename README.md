@@ -61,5 +61,11 @@ there are four type of workers, and all of them can work independently on separa
 
 ### deployment
 
+install the project's dependencies with:
+```bash
+pip3 install -r requirements.txt
+```
+
+
 ### number of workers
 
