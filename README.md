@@ -1,6 +1,7 @@
 # github profile crawler
 
 [![Build Status](https://travis-ci.org/vejuhust/github-profile-crawler.svg?branch=master)](https://travis-ci.org/vejuhust/github-profile-crawler)
+[![Codacy Badge](https://www.codacy.com/project/badge/7cf40af8475b45c5b95cfe1b69f49634)](https://www.codacy.com/app/vejuhust/github-profile-crawler)
 
 distributed web crawler for *GitHub* user profile pages
 
@@ -60,6 +61,17 @@ there are four type of workers, and all of them can work independently on separa
 ## usage
 
 ### configuration
+
+before you deploy, don't forget to change the database settings in **config.py**:
+
+| property | default | note |
+| :---- | :---- | :---- |
+| config_db_addr | 127.0.0.1 | ip of the database host |
+| config_db_port | 27017 | port of the database host  |
+| config_db_name | gitcrawl | the database to authenticate |
+| config_db_user | YOUR_USERNAME | the name of the user to authenticate |
+| config_db_pass | YOUR_PASSWORD | the password of the user to authenticate |
+
 
 ### deployment
 
