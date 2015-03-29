@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Launcher (alpha) of web crawler for github profile crawler"""
+"""Usability verification tool for github profile crawler"""
 
 from Assigner import Assigner
 from Crawler import Crawler
@@ -13,31 +13,25 @@ from time import sleep
 
 
 urls = [
-    "https://www.google.com/",
     "https://www.bing.com/",
-    "https://www.baidu.com/",
+    "https://github.com/xudifsd",
     "https://github.com/wong2/followers?page=3",
-    "https://github.com/wong2/followers?page=2",
     "https://github.com/wong2/followers?page=11",
     "https://github.com/wong2/followers",
     "https://github.com/wong2",
-    "https://github.com/xudifsd",
     "https://github.com/torvalds",
     "https://github.com/thankcreate",
-    "https://github.com/Syndim/following",
-    "https://github.com/Syndim",
-    "https://github.com/SBeator",
-    "https://github.com/SublimeText",
-    "https://github.com/robots.txt",
-    "https://github.com/lmmsoft/following?page=3",
-    "https://github.com/lmmsoft/following?page=2",
     "https://github.com/lmmsoft/following",
-    "https://github.com/Heatwave/followers",
-    "https://github.com/Heatwave",
     "https://github.com/graphlab-code",
     "https://github.com/facelessuser",
     "https://github.com/bluesilence/following",
     "https://github.com/bluesilence/followers",
+    "https://github.com/Syndim/following",
+    "https://github.com/Syndim",
+    "https://github.com/SublimeText",
+    "https://github.com/SBeator",
+    "https://github.com/Heatwave/followers",
+    "https://github.com/Heatwave",
 ]
 
 
