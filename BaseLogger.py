@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """Basic logger to support other workers for github profile crawler"""
 
-from sys import stdout
-from logging import INFO, DEBUG, Formatter, getLogger, FileHandler, StreamHandler, shutdown
 from config import config_log_file
+from logging import INFO, DEBUG, Formatter, getLogger, FileHandler, StreamHandler, shutdown
+from sys import stdout
 
 
 class BaseLogger():

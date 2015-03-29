@@ -2,9 +2,9 @@
 """Database Accessor for github profile crawler"""
 
 from config import *
-from pymongo import MongoClient, ASCENDING
 from contextlib import closing
 from datetime import datetime
+from pymongo import MongoClient, ASCENDING
 
 
 class DatabaseAccessor():

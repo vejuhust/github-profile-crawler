@@ -4,10 +4,10 @@
 from BaseLogger import BaseLogger
 from DatabaseAccessor import DatabaseAccessor
 from contextlib import closing
-from platform import node
-from os import remove
-from json import dumps
 from csv import DictWriter
+from json import dump
+from os import remove
+from platform import node
 from time import strftime
 from zipfile import ZipFile, ZIP_DEFLATED
 
@@ -34,8 +34,10 @@ class Exporter(BaseLogger):
 
     def _save_as_json(self, data, filename="profile.json"):
         with open(filename, 'w') as jsonfile:
-            jsonfile.write(dumps(data, sort_keys=True, indent=4))
-        self._log_info("save as json file: %s", filename)
+            for item in data:
+                dump(item, jsonfile, sort_keys=True)
+                jsonfile.write("\n")
+        self._log_info("save %d items as json file: %s", len(data), filename)
         return filename
 
 
@@ -43,12 +45,12 @@ class Exporter(BaseLogger):
         fields = set()
         for item in data:
             fields = fields.union(set(item.keys()))
-        with open(filename, 'w') as csvfile:
+        with open(filename, 'w', encoding='utf8', newline='') as csvfile:
             writer = DictWriter(csvfile, extrasaction='ignore', dialect='excel', fieldnames=sorted(fields, reverse=True))
             writer.writeheader()
             for item in data:
                 writer.writerow(item)
-        self._log_info("save as csv file: %s", filename)
+        self._log_info("save %d items as csv file: %s", len(data), filename)
         return filename
 
 

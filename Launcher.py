@@ -10,7 +10,6 @@ from config import *
 from contextlib import closing
 from pprint import pprint
 from time import sleep
-import logging
 
 
 urls = [
