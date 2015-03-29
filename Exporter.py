@@ -45,7 +45,7 @@ class Exporter(BaseLogger):
         fields = set()
         for item in data:
             fields = fields.union(set(item.keys()))
-        with open(filename, 'w') as csvfile:
+        with open(filename, 'w', encoding='utf8', newline='') as csvfile:
             writer = DictWriter(csvfile, extrasaction='ignore', dialect='excel', fieldnames=sorted(fields, reverse=True))
             writer.writeheader()
             for item in data:
