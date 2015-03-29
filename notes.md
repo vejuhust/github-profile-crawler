@@ -424,6 +424,8 @@ C:\Python34\python.exe Crawler.py
 ### Travis-CI
 
 * site: https://travis-ci.org/
-* doc: http://docs.travis-ci.com/user/languages/python/
-
+* common: http://docs.travis-ci.com/user/getting-started/
+* config: http://docs.travis-ci.com/user/build-configuration/
+* python: http://docs.travis-ci.com/user/languages/python/
+* mongodb: http://docs.travis-ci.com/user/database-setup/#MongoDB
 
