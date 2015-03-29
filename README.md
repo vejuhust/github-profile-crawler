@@ -51,6 +51,9 @@ there are four type of workers, and all of them can work independently on separa
 
 ### workflow
 
+![figure of workflow](https://cloud.githubusercontent.com/assets/2491781/6884681/78b668c2-d62f-11e4-8a3f-731455edd08b.png)
+
+
 
 ## usage
 
