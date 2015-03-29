@@ -80,6 +80,24 @@ install the project's dependencies with:
 pip3 install -r requirements.txt
 ```
 
+and then you may verify if it works with `python3 Launcher.py` before you launch all the workers with *screen* or *tmux*:
+```bash
+python3 Crawler.py
+python3 Assigner.py
+python3 ParserFollow.py
+python3 ParserProfile.py
+```
+
+also the utilities to monitor the progress:
+```bash
+python3 WatchDog.py
+python3 Reporter.py
+```
+
+after it stopped, export the profiles:
+```bash
+python3 Exporter.py
+```
 
 ### number of workers
 
