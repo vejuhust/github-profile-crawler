@@ -1,6 +1,7 @@
 # github profile crawler
 
 [![Build Status](https://travis-ci.org/vejuhust/github-profile-crawler.svg?branch=master)](https://travis-ci.org/vejuhust/github-profile-crawler)
+[![Codacy Badge](https://www.codacy.com/project/badge/7cf40af8475b45c5b95cfe1b69f49634)](https://www.codacy.com/app/vejuhust/github-profile-crawler)
 
 distributed web crawler for *GitHub* user profile pages
 
@@ -61,6 +62,17 @@ there are four type of workers, and all of them can work independently on separa
 
 ### configuration
 
+before you deploy, don't forget to change the database settings in **config.py**:
+
+| property | default | note |
+| :---- | :---- | :---- |
+| config_db_addr | 127.0.0.1 | ip of the database host |
+| config_db_port | 27017 | port of the database host  |
+| config_db_name | gitcrawl | the database to authenticate |
+| config_db_user | YOUR_USERNAME | the name of the user to authenticate |
+| config_db_pass | YOUR_PASSWORD | the password of the user to authenticate |
+
+
 ### deployment
 
 install the project's dependencies with:
@@ -68,6 +80,32 @@ install the project's dependencies with:
 pip3 install -r requirements.txt
 ```
 
+and then you may verify if it works with `python3 Launcher.py` before you launch all the workers with *screen* or *tmux*:
+```bash
+python3 Crawler.py
+python3 Assigner.py
+python3 ParserFollow.py
+python3 ParserProfile.py
+```
+
+also the utilities to monitor the progress:
+```bash
+python3 WatchDog.py
+python3 Reporter.py
+```
+
+after it stopped, export the profiles:
+```bash
+python3 Exporter.py
+```
 
 ### number of workers
 
+| worker | minimum | suggested |
+| :----: | :----: | :----: |
+| crawler | 1 | 6 |
+| assigner | 1 | 1 |
+| parser_follow | 1 | 2 |
+| parser_profile | 1 | 1 |
+| watchdog | 0 | 1 |
+| reporter | 0 | 1 |
