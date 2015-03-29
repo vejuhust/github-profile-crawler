@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Configurations for github profile crawler"""
 
-from time import strftime
 from multiprocessing import cpu_count
+from time import strftime
 
 
 config_db_addr  = "127.0.0.1"
