@@ -9,7 +9,7 @@ distributed web crawler for *GitHub* user profile pages
 
 message queuing of *github profile crawler* is implemented with *MongoDB*, which provides `db.collection.findAndModify()` to modify and return a single document atomically.
 
-all the database related operations are wrapped in **DatabaseAccessor.py**. there are three queues/collections used:
+all the operations on database are wrapped in **DatabaseAccessor.py**. there are three queues/collections in the system:
 
 * **queue_crawl** - url of pages that should be downloaded
 * **queue_page** - downloaded content and classification of the pages
@@ -60,6 +60,12 @@ there are four type of workers, and all of them can work independently on separa
 ### configuration
 
 ### deployment
+
+install the project's dependencies with:
+```bash
+pip3 install -r requirements.txt
+```
+
 
 ### number of workers
 
