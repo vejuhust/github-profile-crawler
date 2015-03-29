@@ -101,3 +101,11 @@ python3 Exporter.py
 
 ### number of workers
 
+| worker | minimum | suggested |
+| :----: | :----: | :----: |
+| crawler | 1 | 6 |
+| assigner | 1 | 1 |
+| parser_follow | 1 | 2 |
+| parser_profile | 1 | 1 |
+| watchdog | 0 | 1 |
+| reporter | 0 | 1 |
