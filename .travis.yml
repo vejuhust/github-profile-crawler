@@ -1,16 +1,15 @@
 language: python
 
-services:
-  - mongodb
-
 python:
   - "3.2"
   - "3.3"
   - "3.4"
-  - "nightly"
+
+services:
+  - mongodb
 
 install:
-  - "pip install -r requirements.txt"
+  - pip install -r requirements.txt
 
 before_script:
   - sleep 15
