@@ -1,5 +1,7 @@
 # github profile crawler
 
+[![Build Status](https://travis-ci.org/vejuhust/github-profile-crawler.svg?branch=master)](https://travis-ci.org/vejuhust/github-profile-crawler)
+
 distributed web crawler for *GitHub* user profile pages
 
 
